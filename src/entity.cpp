@@ -1,0 +1,124 @@
+#include "entity.h"
+#include "mesh.h"
+
+int Entity::entityCpt = 0;
+Entity::~Entity(){
+    delete this->parent;
+    for(auto p : this->children){
+        delete p;
+    }
+    this->children.clear();
+    delete this;
+}
+
+Entity::Entity(bool isAScene) : id(entityCpt++), isScene(isAScene)
+{
+    this->parent = nullptr;
+    this->children= std::vector<Entity*>();
+//    this->mesh = Mesh();
+    this->name ="UnamedEntity";
+}
+Entity::Entity(Entity* parent, bool isAScene) : id(++entityCpt), isScene(isAScene)
+{
+    this->parent = parent;
+    this->children= std::vector<Entity*>();
+//    this->mesh = Mesh();
+    this->name ="UnamedEntity";
+
+}
+Entity::Entity(Entity* parent ,QString name,bool isAScene) : id(++entityCpt), isScene(isAScene)
+{
+    this->parent = parent;
+    this->children= std::vector<Entity*>();
+//    this->mesh = Mesh();
+    this->name =name;
+
+}
+Entity::Entity(QString name,bool isAScene) : id(++entityCpt), isScene(isAScene)
+{
+    this->parent = nullptr;
+    this->children= std::vector<Entity*>();
+//    this->mesh = Mesh();
+    this->name =name;
+
+}
+
+//void Entity::setMesh(Mesh m){
+//    this->mesh = m;
+//}
+//Mesh Entity::getMesh(){
+//    return this->mesh;
+//}
+
+int Entity::getID(){
+    return this->id;
+}
+Entity* Entity::getParent(){
+    return this->parent;
+}
+
+void Entity::removeParent(){
+    for(size_t i = 0; i < this->parent->children.size();i++){
+        if(this->parent->children[i]->getID() == this->id){
+            this->parent->children.erase(this->parent->children.begin()+i);
+        }
+    }
+    this->parent = nullptr;
+}
+void Entity::setParent(Entity* newParent){
+    if(this->getID() == 0){
+
+    }
+    if(this->parent != nullptr){
+        this->removeParent();
+    }
+    this->parent = newParent;
+    this->parent->addChild(this);
+
+}
+
+
+void Entity::addChild(Entity* child){
+    if(this->children.size()>0){
+        bool alreadyIn = false;
+        for(size_t i =0; i < this->children.size(); ++i){
+            if(this->children[i]->getID() == child->getID()){
+                alreadyIn = true;
+            }
+        }
+        if(!alreadyIn){
+            this->children.push_back(child);
+            child->setParent(this);
+        }
+    }else{
+        this->children.push_back(child);
+        child->setParent(this);
+    }
+}
+
+void  Entity::removeChildByID(int childID){
+    for(size_t i =0; i < this->children.size(); ++i){
+        if(this->children[i]->getID() == childID){
+           this->children[i]->removeParent();
+        }
+        this->children.erase(this->children.begin()+i);
+    }
+}
+Entity*  Entity::getChildByID(int childID){
+    for(size_t i =0; i < this->children.size(); ++i){
+        if(this->children[i]->getID() == childID){
+           return this->children[i];
+        }
+    }
+    std::cout<<"Child not found"<<std::endl;
+    return nullptr;
+}
+
+
+QString Entity::getEntityName(){
+  return this->name;
+}
+
+void Entity::renameEntity(QString newName){
+    this->name = newName;
+}
