@@ -1,5 +1,5 @@
 
-
+#include <QtMath>
 #include "vec3.h"
 
     vec3::vec3():x(0.0),y(0.0),z(0.0){}
@@ -17,6 +17,7 @@
     vec3 vec3::operator -=(vec3 const v){return vec3(x-v.x, y-v.y, z-v.z);}
     vec3 vec3::operator *=(float const a){return vec3(a*x, a*y, a*z);}
     vec3 vec3::operator /=(float const a){return vec3(x/a, y/a, z/a);}
+
 
 
 
@@ -43,6 +44,19 @@
                                              ,m20*m.m00+m21*m.m10+m22*m.m20, m20*m.m01+m21*m.m11+m22*m.m21 , m20*m.m02+m21*m.m12+m22*m.m22 );}
 
     mat3 mat3::operator+(mat3 const m){return mat3(m00+m.m00,m01+m.m01,m02+m.m02,m10+m.m10, m11+m.m11, m12+m.m12, m20+m.m20, m21+m.m21, m22+m.m22);}
+
+    mat3 mat3::rotationMat(vec3 rot){
+        return(mat3(1.0,0.0,0.0,
+                                0.0,cos(rot.x),-sin(rot.x),
+                                0.0,sin(rot.x),cos(rot.x)) *
+                           mat3(cos(rot.y),0,sin(rot.y),
+                                0.0,1.0,0.0,
+                                -sin(rot.y),0.0,cos(rot.y))*
+                           mat3(cos(rot.z),-sin(rot.z),0.0,
+                                sin(rot.z),cos(rot.z),0.0,
+                                0.0,0.0,1.0
+                            ));
+    }
 
     vec3 mat3::operator *(vec3 const v){
         return vec3(m00,m10,m20)*v.x+vec3(m01,m11,m21)*v.y+vec3(m02,m12,m22)*v.z;

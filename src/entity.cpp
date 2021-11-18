@@ -3,15 +3,16 @@
 
 int Entity::entityCpt = 0;
 Entity::~Entity(){
-    delete this->parent;
+
     for(auto p : this->children){
         delete p;
     }
+    //delete this->parent;
     this->children.clear();
-    delete this;
+    //delete this;
 }
 
-Entity::Entity(bool isAScene) : id(entityCpt++), isScene(isAScene)
+Entity::Entity(bool isAScene) : id(++entityCpt), isScene(isAScene)
 {
     this->parent = nullptr;
     this->children= std::vector<Entity*>();
@@ -44,6 +45,13 @@ Entity::Entity(QString name,bool isAScene) : id(++entityCpt), isScene(isAScene)
 //    this->mesh = Mesh();
     this->name =name;
 
+}
+
+Entity::Entity(QString name, Object obj, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene){
+    this->name=name;
+    this->children=std::vector<Entity*>();
+    this->transfo=transfo;
+    this->obj=obj;
 }
 
 Entity::Entity(Entity* parent, QString name, Object obj, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene)
@@ -85,7 +93,7 @@ void Entity::setParent(Entity* newParent){
         this->removeParent();
     }
     this->parent = newParent;
-    this->parent->addChild(this);
+    //this->parent->addChild(this);
 
 }
 
@@ -114,11 +122,11 @@ void Entity::addChild(Entity* child){
         }
         if(!alreadyIn){
             this->children.push_back(child);
-            child->setParent(this);
+            //child->setParent(this);
         }
     }else{
         this->children.push_back(child);
-        child->setParent(this);
+        //child->setParent(this);
     }
 }
 
@@ -153,20 +161,31 @@ Object Entity::getObject(){
     return this->obj;
 }
 
-void Entity::renderScene(Transformation parentTrans, GeometryEngine& geoEngine){   //better way ? entity has a geoEngine -> push nodeVertices recursively . then geoEngine needs a "pushInBuff method" and entity needs a geoEngine
-    geoEngine.pushInVertBuff(obj.render(parentTrans.compose(transfo)));
-    geoEngine.pushInIdxBuff(obj.ids);
-    for (int i=0; i<children.size();i++){
-        children[i]->renderScene(parentTrans.compose(transfo),geoEngine);
-    }
+std::vector<Entity*> Entity::getChildren(){
+    return children;
 }
 
-void Entity::draw(GeometryEngine& geoE,QOpenGLShaderProgram *program, quintptr sizeYetArr, quintptr sizeYetInd){
-    geoE.draw(program,sizeYetArr,sizeYetInd);
+void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine){//, std::vector<std::vector<vec3>>* totVerts, std::vector<std::vector<unsigned int>>* totIdx){ //
+    //std::cout<<"cc je suis rendered"<<std::endl;
+//    totVerts->push_back(std::vector<vec3>(obj.render(parentTrans.compose(transfo))));
+//    totIdx->push_back(std::vector<unsigned int>(obj.ids));
+    transfo=Transformation(transfo.translation,transfo.rotation*mat3::rotationMat(vec3(0.0,0.0,3.14/400)),transfo.scale);
     for (auto child : children){
-        child->draw(geoE,program,sizeYetArr+obj.vertex.size(),sizeYetInd+obj.ids.size());
+        (child)->renderScene(parentTrans.compose(transfo),geoEngine);//,totVerts,totIdx);
     }
+
+    geoEngine->pushInVertBuff(obj.render(parentTrans.compose(
+                                             transfo)));
+    geoEngine->pushInIdxBuff(obj.ids);
+
 }
+
+//void Entity::draw(GeometryEngine& geoE,QOpenGLShaderProgram* program, quintptr sizeYetArr, quintptr sizeYetInd){
+  //  geoE.draw(program);
+//    for (auto child : children){
+//        child->draw(geoE,program,sizeYetArr+obj.vertex.size(),sizeYetInd+obj.ids.size());
+//    }
+//}
 
 std::vector<vec3> Entity::renderObject(Transformation parentTrans){
     return obj.render(parentTrans.compose(transfo));

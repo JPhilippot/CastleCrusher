@@ -51,7 +51,6 @@
 #ifndef MAINWIDGET_H
 #define MAINWIDGET_H
 
-#include "geometryengine.h"
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_3_1>
@@ -61,16 +60,24 @@
 #include <QBasicTimer>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
-
+class Entity;
+#include "entity.h"
 class GeometryEngine;
+
+#include "geometryengine.h"
 
 class MainWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_1
 {
     Q_OBJECT
 
 public:
-    explicit MainWidget(QWidget *parent = 0);
+    explicit MainWidget(Entity* e,QWidget *parent = 0);
     ~MainWidget();
+    GeometryEngine *geometries;
+    QOpenGLShaderProgram program;
+    Entity* entity;
+      void initializeGL() override;
+
 
 protected:
     void mousePressEvent(QMouseEvent *e) override;
@@ -78,7 +85,7 @@ protected:
     void timerEvent(QTimerEvent *e) override;
     void keyPressEvent(QKeyEvent *e) override;
 
-    void initializeGL() override;
+
     void resizeGL(int w, int h) override;
     void paintGL() override;
 
@@ -87,8 +94,8 @@ protected:
 
 private:
     QBasicTimer timer;
-    QOpenGLShaderProgram program;
-    GeometryEngine *geometries;
+
+
 
     QOpenGLTexture *textureR;
     QOpenGLTexture *textureG;

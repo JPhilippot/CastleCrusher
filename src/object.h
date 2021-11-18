@@ -31,7 +31,7 @@ public:
     Object(std::vector<vec3> vert, std::vector<unsigned int> indices);
     Object();
 
-    Object(Shape myShape, int size);
+    Object(Shape myShape, float size);
     std::vector<vec3> render(Transformation transfo);
 };
 

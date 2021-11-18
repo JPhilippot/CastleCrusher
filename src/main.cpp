@@ -57,15 +57,50 @@
 #include "entity.h"
 #include <QString>
 #include <string>
+#include <time.h>
 #endif
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    Entity e = Entity(QString("Scene1"),true);
-    std::cout<<"Entity created : "<<e.getEntityName().toStdString()<<std::endl;
+//    Object test = Object(Object::CUBE,1.0f);
+//    for (int i=0;i<test.vertex.size();i++){
+//        std::cout<<test.vertex[i].x<<test.vertex[i].y<<test.vertex[i].z<<std::endl;
+//    }
+//    Transformation trans = Transformation(vec3(1.0f,1.0f,1.0f),mat3(),vec3(1.0f,1.0f,1.0f));
+//    std::vector<vec3> postTrans=test.render(trans);
+//    for (int i=0;i<postTrans.size();i++){
+//        std::cout<<postTrans[i].x<<postTrans[i].y<<postTrans[i].z<<std::endl;
+//        std::cout<<trans.apply(test.vertex[i]).x<<trans.apply(test.vertex[i]).y<<trans.apply(test.vertex[i]).z<<std::endl;
+//    }
 
+//    vec3 a=vec3(1.0,1.0,1.0);
+//    vec3 b = vec3(0.0,0.0,0.0);
+//    vec3 c = vec3(-1.0,0.0,1.0);
+
+//    std::cout<<a.x<<a.y<<a.z<<std::endl;
+//    std::cout<<(a+c).x<<(a+c).y<<(a+c).z<<std::endl;
+
+
+    Entity* e = new Entity(QString("Soleil"),Object(Object::CUBE,1.0f),Transformation(vec3(0.0f,0.0f,0.0f),vec3(0,0,0),vec3(1.0f,1.0f,1.0f)),true);
+
+//    Entity* enfant = new Entity(e,QString("obj1"),Object(Object::CUBE,0.3f),
+//                          Transformation(),false);
+//    Entity* enfant2 = new Entity(e,QString("obj2"),Object(Object::CUBE,0.6f),
+//                          Transformation(),false);
+
+    Entity* enfant = new Entity(e,QString("obj1"),Object(Object::CUBE,0.3f),
+                          Transformation(vec3(1.0f,0.0f,0.0f),mat3(),vec3(1.0f,1.0f,1.0f)),false);
+    Entity* enfant2 = new Entity(e,QString("obj2"),Object(Object::CUBE,0.6f),
+                          Transformation(vec3(-0.0f,1.0f,0.0f),vec3(0,0,0),vec3(1.0f,1.0f,1.0f)),false);
+
+    e->addChild(enfant);
+    e->addChild(enfant2);
+
+    std::cout<<"Entity created : "<<e->getEntityName().toStdString()<<std::endl;
+
+    std::cout<<"Enfants?"<<(int)(e->getChildren().size())<<std::endl;
     QSurfaceFormat format;
     format.setDepthBufferSize(24);
     QSurfaceFormat::setDefaultFormat(format);
@@ -76,10 +111,16 @@ int main(int argc, char *argv[])
 
 
 
+
 #ifndef QT_NO_OPENGL
-    MainWidget widget;
-    std::cout<<"M1"<<std::endl;
+    //GeometryEngine* geoE =new  GeometryEngine(e);
+    MainWidget widget(e);
     widget.show();
+
+    //e->renderScene(Transformation(),*geoE);
+    //e->draw(*widget.geometries,&widget.program,0,0);
+    std::cout<<"M1"<<std::endl;
+
     std::cout<<"M2"<<std::endl;
 #else
     QLabel note("OpenGL Support required");

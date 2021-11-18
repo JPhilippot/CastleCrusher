@@ -54,13 +54,15 @@
 #include <iostream>
 #include <math.h>
 
-MainWidget::MainWidget(QWidget *parent) :
+
+MainWidget::MainWidget(Entity* e, QWidget *parent) :
     QOpenGLWidget(parent),
     geometries(0),
     textureR(0),
     textureG(0),
     textureS(0),
-    angularSpeed(0)
+    angularSpeed(0),
+    entity(e)
 {
 }
 
@@ -191,7 +193,7 @@ void MainWidget::initializeGL()
 {
     initializeOpenGLFunctions();
 
-    glClearColor(0, 0, 0, 1);
+    glClearColor(0, 0, 0, 0);
 
     initShaders();
 //
@@ -200,8 +202,10 @@ void MainWidget::initializeGL()
     glEnable(GL_DEPTH_TEST);
 
 //! [2]
+    glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 
-    geometries = new GeometryEngine;
+
+    geometries = new GeometryEngine(entity);
     std::cout<<"D4"<<std::endl;
     //geometries->loadMesh("C:/Users/Cawosh/Documents/GitHub/HMIN317MoteursDeJeux/TP3/ressources/suzanne.obj");
 
@@ -286,7 +290,7 @@ void MainWidget::paintGL()
 
 
     if(!isCamInit){
-        translation = QVector3D(0.0, 0.0, -3.5);
+        translation = QVector3D(0.0, 0.0, -5);
         target = objectPosition;
         cameraPosition = QVector3D(0.0,0.0, -10.0);
         //si je prévois des translations de l'objet, il faudra que j'init sa pos ici
@@ -297,7 +301,7 @@ void MainWidget::paintGL()
 
     modelMatrix.setToIdentity();viewMatrix.setToIdentity();
 
-    objectPosition = QVector3D(0.0, 0.0, -3.5);
+    objectPosition = QVector3D(0.0, 0.0, -5);
     modelMatrix.translate(objectPosition);
     modelMatrix.rotate(oRotation);
     QVector3D cameraUp = QVector3D(0.0,1.0,0.0);
@@ -316,7 +320,13 @@ void MainWidget::paintGL()
     //geometries->drawMeshGeometry(&program);
     // Draw cube geometry
     //geometries->drawCubeGeometry(&program);
-    geometries->drawPlaneGeometry(&program);
+    //geometries->drawPlaneGeometry(&program);
+
+
+    //renderscene here -> add root to widget
+    entity->renderScene(Transformation(),geometries);
+    geometries->draw(&program);
+    update();
 }
 
 

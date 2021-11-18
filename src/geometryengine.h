@@ -61,19 +61,21 @@
 #include <fstream>
 #include <string>
 #include "vec3.h"
+#include "transformation.h"
 #include <sstream>
-//#include "entity.h"
+class Entity;
+#include "entity.h"
 
 class GeometryEngine : protected QOpenGLFunctions
 {
 public:
-    GeometryEngine();
+    GeometryEngine(Entity* e);
     virtual ~GeometryEngine();
 
     void drawCubeGeometry(QOpenGLShaderProgram *program);
     void drawPlaneGeometry(QOpenGLShaderProgram *program);
     void drawMeshGeometry(QOpenGLShaderProgram *program);
-    void draw(QOpenGLShaderProgram *program, quintptr offsetArray,quintptr offsetIndex);
+    void draw(QOpenGLShaderProgram *program);
     void loadObj(const std::string & filename, std::vector<QVector3D> &vertices, std::vector<QVector3D> &normals, std::vector<GLushort> &triangles, std::vector<QVector2D> &uvs);
 
     //Loads a mesh from OBJ or OFF file
@@ -90,6 +92,8 @@ private:
 
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
+    std::vector<std::vector<vec3>> vertices;
+    std::vector<std::vector<unsigned int>> indices;
 
 };
 

@@ -13,7 +13,6 @@ TEMPLATE = app
 SOURCES += ./src/main.cpp \
     ./src/object.cpp \
     ./src/entity.cpp \
-    ./src/mesh.cpp \
     ./src/mainwidget.cpp \
     ./src/geometryengine.cpp \
     src/transformation.cpp \
@@ -24,7 +23,6 @@ HEADERS += ./src/vec3.h \
     ./src/mainwidget.h \
     ./src/geometryengine.h \
     ./src/object.h\
-    ./src/mesh.h \
      ./src/transformation.h
 
 RESOURCES += \

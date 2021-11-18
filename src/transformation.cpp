@@ -1,5 +1,7 @@
 #include "transformation.h"
-//#include "vec3.h"
+#include <iostream>
+#include <QtMath>
+#include "vec3.h"
 //#include "object.h"
 //#include "entity.h"
 
@@ -21,6 +23,19 @@
         else{return Transformation(translation*(-1),rotation.transpose(),vec3(1.0,1.0,1.0));}
     }
 
+    Transformation::Transformation(vec3 trans, vec3 rot, vec3 sc):translation(trans),scale(sc){
+        rotation = mat3(1.0,0.0,0.0,
+                        0.0,cos(rot.x),-sin(rot.x),
+                        0.0,sin(rot.x),cos(rot.x)) *
+                   mat3(cos(rot.y),0,sin(rot.y),
+                        0.0,1.0,0.0,
+                        -sin(rot.y),0.0,cos(rot.y))*
+                   mat3(cos(rot.z),-sin(rot.z),0.0,
+                        sin(rot.z),cos(rot.z),0.0,
+                        0.0,0.0,1.0
+                    );
+    }
+
 
     vec3 Transformation::apply(vec3 point){ //scaling -> rotation -> translation
         vec3 res = vec3(point);
@@ -30,7 +45,8 @@
         res.z *= scale.z;
 
         res = rotation*res;
-        res+=translation;
+
+        res=vec3(res+translation);
         return res;
     }
 

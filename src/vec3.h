@@ -55,7 +55,7 @@ public:
                                              //,m20*m.m00+m21*m.m10+m22*m.m20, m20*m.m01+m21*m.m11+m22*m.m21 , m20*m.m02+m21*m.m12+m22*m.m22 );}
 
     mat3 operator+(mat3 const m);//{return mat3(m00+m.m00,m01+m.m01,m02+m.m02,m10+m.m10, m11+m.m11, m12+m.m12, m20+m.m20, m21+m.m21, m22+m.m22);}
-
+    mat3 static rotationMat(vec3 vec);
     vec3 operator *(vec3 const v);//{
         //return vec3(m00,m10,m20)*v.x+vec3(m01,m11,m21)*v.y+vec3(m02,m12,m22)*v.z;
     //}

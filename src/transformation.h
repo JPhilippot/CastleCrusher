@@ -16,6 +16,7 @@ public:
 
     Transformation();
     Transformation(vec3 trans, mat3 rot, vec3 sc);//
+    Transformation(vec3 trans, vec3 rot, vec3 sc);
     Transformation compose(Transformation t);
 
     Transformation invert();

@@ -11,7 +11,9 @@
 #include <QImage>
 #include <vector>
 #include "vec3.h"
-#include "mesh.h"
+
+
+class GeometryEngine;
 #include "geometryengine.h"
 //class Transformation;
 //#include "transformation.h"
@@ -25,12 +27,14 @@ public:
     Entity(Entity* parent,bool isAScene = false);
     Entity(QString name,bool isAScene = false);
     Entity(Entity* parent ,QString name,bool isAScene = false);
+    Entity(QString name, Object obj, Transformation transfo, bool isAScene = true);
     Entity(Entity* parent, QString name, Object obj, Transformation transfo, bool isAScene = false);
     ~Entity();
 
     Entity* getParent();
     void setParent(Entity* newParent);
     void removeParent();
+    std::vector<Entity*> getChildren();
 
     void addChild(Entity* child);
     void removeChildByID(int childID);
@@ -44,10 +48,10 @@ public:
 
     int getID();
 
-    void renderScene(Transformation parentTrans, GeometryEngine& geoEngine); //
+    void renderScene(Transformation parentTrans, GeometryEngine* geoEngine);//, std::vector<std::vector<vec3>>* totVerts, std::vector<std::vector<unsigned int>>* totIdx); //
     long countVertices();
     long countIndices();
-    void draw(GeometryEngine& geoE, QOpenGLShaderProgram *program ,quintptr sizeYetArr, quintptr sizeYetInd);
+    void draw(GeometryEngine& geoE, QOpenGLShaderProgram* program ,quintptr sizeYetArr, quintptr sizeYetInd);
 
 private:
     const bool isScene;
