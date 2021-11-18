@@ -12,7 +12,12 @@
 #include <vector>
 #include "vec3.h"
 #include "mesh.h"
-#include "transformation.h"
+#include "geometryengine.h"
+//class Transformation;
+//#include "transformation.h"
+class Object;
+#include "object.h"
+
 class Entity
 {
     // voir les transform comme en unity
@@ -35,20 +40,26 @@ public:
     QString getEntityName();
     void renameEntity(QString newName);
 
-    int getID();
+    Object getObject();
 
-    void renderScene(); //
+    int getID();
+    const bool isScene;
+    void renderScene(Transformation parentTrans, GeometryEngine geoEngine);
+    long countVertices();
+    long countIndices();
+
 
 private:
-    const bool isScene;
+    Object obj;
     QString name;
     static int entityCpt;
     const int id;
     Entity* parent;
     std::vector<Entity*> children;
     Transformation transfo;
+    Object obj;
 
-    vector<vec3> renderObject(Transformation parentTrans);
+    std::vector<vec3> renderObject(Transformation parentTrans);
 
 };
 

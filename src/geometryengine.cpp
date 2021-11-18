@@ -71,10 +71,10 @@ GeometryEngine::GeometryEngine()
     indexBuf.create();
 
     // Initializes cube geometry and transfers it to VBOs
-    //initCubeGeometry();
+    initCubeGeometry();
 
     // Initializes plane geometry and transfers it to VBOs with nxm points -------------------------------------------------
-    initPlaneGeometry(256,256);
+    //initPlaneGeometry(256,256);
 }
 
 GeometryEngine::~GeometryEngine()
@@ -83,6 +83,27 @@ GeometryEngine::~GeometryEngine()
     indexBuf.destroy();
 }
 //! [0]
+
+
+//void GeometryEngine::init(Entity scene){
+//    long verticesNbr=scene.countVertices();
+//    long indicesNbr=scene.countIndices();
+//    arrayBuf.bind();
+//    arrayBuf.allocate();
+//    indexBuf.bind();
+//    indexBuf.allocate();
+
+//}
+
+
+
+void pushInVertBuff(std::vector<vec3> vert){
+
+}
+void pushInIdxBuff(std::vector<vec3> idx){
+
+}
+
 
 void GeometryEngine::initCubeGeometry()
 {

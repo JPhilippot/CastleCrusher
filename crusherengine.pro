@@ -15,7 +15,10 @@ SOURCES += ./src/main.cpp \
     ./src/entity.cpp \
     ./src/mesh.cpp \
     ./src/mainwidget.cpp \
-    ./src/geometryengine.cpp
+    ./src/geometryengine.cpp \
+    ./src/transformation.cpp \
+    ./src/vec3.cpp
+
 
 HEADERS += ./src/vec3.h \
     ./src/entity.h \

@@ -1,7 +1,7 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "entity.h"
+//#include "entity.h"
 enum shape{
     TRIANGLE,
     SPHERE,

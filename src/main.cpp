@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    Entity e = Entity(QString("Scene1"));
+    Entity e = Entity(QString("Scene1"),true);
     std::cout<<"Entity created : "<<e.getEntityName().toStdString()<<std::endl;
 
     QSurfaceFormat format;
