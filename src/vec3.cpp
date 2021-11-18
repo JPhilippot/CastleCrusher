@@ -1,4 +1,5 @@
 
+
 #include "vec3.h"
 
     vec3::vec3():x(0.0),y(0.0),z(0.0){}
@@ -50,4 +51,6 @@
     mat3 mat3::transpose(){
         return mat3(m00,m10,m20,m01,m11,m21,m02,m12,m22);
     }
+
+
 

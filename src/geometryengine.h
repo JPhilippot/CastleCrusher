@@ -62,7 +62,7 @@
 #include <string>
 #include "vec3.h"
 #include <sstream>
-
+//#include "entity.h"
 
 class GeometryEngine : protected QOpenGLFunctions
 {
@@ -73,13 +73,13 @@ public:
     void drawCubeGeometry(QOpenGLShaderProgram *program);
     void drawPlaneGeometry(QOpenGLShaderProgram *program);
     void drawMeshGeometry(QOpenGLShaderProgram *program);
-
+    void draw(QOpenGLShaderProgram *program, quintptr offsetArray,quintptr offsetIndex);
     void loadObj(const std::string & filename, std::vector<QVector3D> &vertices, std::vector<QVector3D> &normals, std::vector<GLushort> &triangles, std::vector<QVector2D> &uvs);
 
     //Loads a mesh from OBJ or OFF file
     void loadMesh(const std::string & filename);
     void pushInVertBuff(std::vector<vec3> vert);
-    void pushInIdxBuff(std::vector<vec3> idx);
+    void pushInIdxBuff(std::vector<unsigned int>& idx);
 
 
 private:

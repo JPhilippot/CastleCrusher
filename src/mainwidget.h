@@ -61,7 +61,6 @@
 #include <QBasicTimer>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
-#include "entity.h"
 
 class GeometryEngine;
 
@@ -71,7 +70,6 @@ class MainWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_1
 
 public:
     explicit MainWidget(QWidget *parent = 0);
-    explicit MainWidget(Entity *newScene,QWidget *parent = 0) ;
     ~MainWidget();
 
 protected:
@@ -83,7 +81,6 @@ protected:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
-    void getScene(Entity* newScene);
 
     void initShaders();
     void initTextures();
@@ -92,7 +89,6 @@ private:
     QBasicTimer timer;
     QOpenGLShaderProgram program;
     GeometryEngine *geometries;
-    Entity *scene;
 
     QOpenGLTexture *textureR;
     QOpenGLTexture *textureG;
