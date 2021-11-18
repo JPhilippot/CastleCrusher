@@ -11,7 +11,7 @@ Entity::~Entity(){
     delete this;
 }
 
-Entity::Entity(bool isAScene) : id(entityCpt++), isScene(isAScene)
+Entity::Entity(bool isAScene) : id(++entityCpt), isScene(isAScene)
 {
     this->parent = nullptr;
     this->children= std::vector<Entity*>();

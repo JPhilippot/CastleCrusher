@@ -50,7 +50,6 @@ public:
 
 
 private:
-    Object obj;
     QString name;
     static int entityCpt;
     const int id;
