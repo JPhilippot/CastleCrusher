@@ -54,14 +54,15 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
-#include <QRandomGenerator>
+//#include <QRandomGenerator>
 #include <QOpenGLTexture>
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <sstream>
 #include "vec3.h"
+#include <sstream>
+
 
 class GeometryEngine : protected QOpenGLFunctions
 {
@@ -77,6 +78,9 @@ public:
 
     //Loads a mesh from OBJ or OFF file
     void loadMesh(const std::string & filename);
+    void pushInVertBuff(std::vector<vec3> vert);
+    void pushInIdxBuff(std::vector<vec3> idx);
+
 
 private:
     void initCubeGeometry();

@@ -1,6 +1,4 @@
 #include "object.h"
-
-//#include "vec3.h"
 #include <vector>
 #include <iostream>
 
@@ -127,3 +125,7 @@
         }
         return res;
     }
+
+
+
+
