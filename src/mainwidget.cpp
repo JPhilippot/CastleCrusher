@@ -203,7 +203,8 @@ void MainWidget::initializeGL()
 
     geometries = new GeometryEngine;
     std::cout<<"D4"<<std::endl;
-    geometries->loadMesh(":/ressources/suzanne.obj");
+    //geometries->loadMesh("C:/Users/Cawosh/Documents/GitHub/HMIN317MoteursDeJeux/TP3/ressources/suzanne.obj");
+
 
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
@@ -287,7 +288,7 @@ void MainWidget::paintGL()
     if(!isCamInit){
         translation = QVector3D(0.0, 0.0, -3.5);
         target = objectPosition;
-        cameraPosition = QVector3D(0.0,0.0, -6.0);
+        cameraPosition = QVector3D(0.0,0.0, -10.0);
         //si je prévois des translations de l'objet, il faudra que j'init sa pos ici
         isCamInit = true;
     }
@@ -312,9 +313,9 @@ void MainWidget::paintGL()
 
     // Use texture unit 0 which contains cube.png
     program.setUniformValue("texture", 0);
-    geometries->drawMeshGeometry(&program);
+    //geometries->drawMeshGeometry(&program);
     // Draw cube geometry
-   // geometries->drawCubeGeometry(&program);
+    geometries->drawCubeGeometry(&program);
 }
 
 
@@ -473,7 +474,7 @@ void MainWidget::resizeGL(int w, int h)
 }
 //! [5]
 
-void MainWidget::paintGL()
+void MainWidget::()
 {
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

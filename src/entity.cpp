@@ -1,5 +1,5 @@
 #include "entity.h"
-#include "mesh.h"
+//#include "mesh.h"
 
 int Entity::entityCpt = 0;
 Entity::~Entity(){
@@ -77,6 +77,20 @@ void Entity::setParent(Entity* newParent){
 
 }
 
+long Entity::countVertices(){
+    long res=0;
+    for (int i=0;i<children.size();i++){
+        res+=children[i]->countVertices();
+    }
+    return this->obj.vertex.size()+res;
+}
+long Entity::countIndices(){
+    long res=0;
+    for (int i=0;i<children.size();i++){
+        res+=children[i]->countIndices();
+    }
+    return this->obj.ids.size()+res;
+}
 
 void Entity::addChild(Entity* child){
     if(this->children.size()>0){
@@ -121,4 +135,19 @@ QString Entity::getEntityName(){
 
 void Entity::renameEntity(QString newName){
     this->name = newName;
+}
+
+Object Entity::getObject(){
+    return this->obj;
+}
+
+void Entity::renderScene(Transformation parentTrans, GeometryEngine geoEngine){   //better way ? entity has a geoEngine -> push nodeVertices recursively . then geoEngine needs a "pushInBuff method" and entity needs a geoEngine
+    geoEngine.pushInVertBuff(renderObject(parentTrans));
+    for (int i=0; i<children.size();i++){
+        children[i]->renderScene(parentTrans.compose(transfo),geoEngine);
+    }
+}
+
+std::vector<vec3> Entity::renderObject(Transformation parentTrans){
+    return obj.render(parentTrans.compose(transfo));
 }
