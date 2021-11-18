@@ -1,3 +1,4 @@
+
 #include "entity.h"
 //#include "mesh.h"
 
@@ -11,7 +12,7 @@ Entity::~Entity(){
     delete this;
 }
 
-Entity::Entity(bool isAScene) : id(entityCpt++), isScene(isAScene)
+Entity::Entity(bool isAScene) : id(++entityCpt), isScene(isAScene)
 {
     this->parent = nullptr;
     this->children= std::vector<Entity*>();
@@ -156,3 +157,4 @@ void Entity::draw(GeometryEngine& geoE, quintptr sizeYetArr, quintptr sizeYetInd
 std::vector<vec3> Entity::renderObject(Transformation parentTrans){
     return obj.render(parentTrans.compose(transfo));
 }
+
