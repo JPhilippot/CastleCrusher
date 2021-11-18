@@ -11,11 +11,13 @@ TEMPLATE = app
 #HEADERS = ./src/*.h
 
 SOURCES += ./src/main.cpp \
+    ./src/vec3.cpp \
     ./src/object.cpp \
     ./src/entity.cpp \
     ./src/mesh.cpp \
     ./src/mainwidget.cpp \
-    ./src/geometryengine.cpp
+    ./src/geometryengine.cpp\
+     ./src/transformation.cpp
 
 HEADERS += ./src/vec3.h \
     ./src/entity.h \

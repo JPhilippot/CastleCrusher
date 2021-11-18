@@ -61,6 +61,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include "vec3.h"
 
 class GeometryEngine : protected QOpenGLFunctions
 {

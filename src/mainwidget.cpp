@@ -54,6 +54,7 @@
 #include <iostream>
 #include <math.h>
 
+
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent),
     geometries(0),
@@ -64,6 +65,23 @@ MainWidget::MainWidget(QWidget *parent) :
 {
 }
 
+MainWidget::MainWidget(Entity* newScene,QWidget *parent) :
+    QOpenGLWidget(parent),
+    geometries(0),
+    textureR(0),
+    textureG(0),
+    textureS(0),
+    angularSpeed(0)
+{
+    if(scene->isScene){
+        this->scene = newScene;
+    }else{
+        std::cout<<"Error! Couldn't get the scene : "<<newScene->getEntityName().toStdString()<<" is not a scene ! \n No scene was assigned to this window."<<std::endl;
+        this->scene = nullptr;
+    }
+}
+
+
 MainWidget::~MainWidget()
 {
     // Make sure the context is current when deleting the texture
@@ -73,11 +91,20 @@ MainWidget::~MainWidget()
     delete textureR;
     delete textureS;
     delete geometries;
+    std::cout<<"Unlinking "<<this->scene->getEntityName().toStdString()<<" before deleting the window. This scene is not deleted."<<std::endl;
+    this->scene = nullptr;
     doneCurrent();
 }
 
+void MainWidget::getScene(Entity *newScene){
+    if(newScene->isScene){
+        this->scene = newScene;
+    }else{
+        std::cout<<"Error! Couldn't get the scene : "<<scene->getEntityName().toStdString()<<" is not a scene ! \n No scene was assigned to this window."<<std::endl;
+        this->scene = nullptr;
+    }
+}
 
-//! [0]
 void MainWidget::mousePressEvent(QMouseEvent *e)
 {
     // Save mouse press position
@@ -102,9 +129,8 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
     // Increase angular speed
     angularSpeed += acc;
 }
-//! [0]
 
-//! [1]
+
 void MainWidget::timerEvent(QTimerEvent *)
 {
     // Decrease angular speed (friction)
@@ -121,7 +147,7 @@ void MainWidget::timerEvent(QTimerEvent *)
         update();
     }
 }
-//! [1]
+
 
 void MainWidget::keyPressEvent(QKeyEvent *event)
 {

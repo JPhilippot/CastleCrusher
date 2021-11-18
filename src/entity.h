@@ -13,6 +13,9 @@
 #include "vec3.h"
 #include "mesh.h"
 #include "transformation.h"
+#include "geometryengine.h"
+#include "object.h"
+class Object;
 class Entity
 {
     // voir les transform comme en unity
@@ -36,11 +39,14 @@ public:
     void renameEntity(QString newName);
 
     int getID();
+    const bool isScene;
+    void renderScene(Transformation parentTrans, GeometryEngine geoEngine);
+    long countVertices();
+    long countIndices();
 
-    void renderScene(); //
 
 private:
-    const bool isScene;
+    Object obj;
     QString name;
     static int entityCpt;
     const int id;
