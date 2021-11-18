@@ -141,10 +141,18 @@ Object Entity::getObject(){
     return this->obj;
 }
 
-void Entity::renderScene(Transformation parentTrans, GeometryEngine geoEngine){   //better way ? entity has a geoEngine -> push nodeVertices recursively . then geoEngine needs a "pushInBuff method" and entity needs a geoEngine
-    geoEngine.pushInVertBuff(renderObject(parentTrans));
+void Entity::renderScene(Transformation parentTrans, GeometryEngine& geoEngine){   //better way ? entity has a geoEngine -> push nodeVertices recursively . then geoEngine needs a "pushInBuff method" and entity needs a geoEngine
+    geoEngine.pushInVertBuff(obj.render(parentTrans.compose(transfo)));
+    geoEngine.pushInIdxBuff(obj.ids);
     for (int i=0; i<children.size();i++){
         children[i]->renderScene(parentTrans.compose(transfo),geoEngine);
+    }
+}
+
+void Entity::draw(GeometryEngine& geoE,QOpenGLShaderProgram *program, quintptr sizeYetArr, quintptr sizeYetInd){
+    geoE.draw(program,sizeYetArr,sizeYetInd);
+    for (auto child : children){
+        child->draw(geoE,program,sizeYetArr+obj.vertex.size(),sizeYetInd+obj.ids.size());
     }
 }
 

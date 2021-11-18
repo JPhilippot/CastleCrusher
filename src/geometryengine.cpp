@@ -71,10 +71,10 @@ GeometryEngine::GeometryEngine()
     indexBuf.create();
 
     // Initializes cube geometry and transfers it to VBOs
-    initCubeGeometry();
+    //initCubeGeometry();
 
     // Initializes plane geometry and transfers it to VBOs with nxm points -------------------------------------------------
-    //initPlaneGeometry(256,256);
+    initPlaneGeometry(256,256);
 }
 
 GeometryEngine::~GeometryEngine()
@@ -97,13 +97,39 @@ GeometryEngine::~GeometryEngine()
 
 
 
-void pushInVertBuff(std::vector<vec3> vert){
+void GeometryEngine::pushInVertBuff(std::vector<vec3> vert){
 
+    arrayBuf.bind();
+    arrayBuf.allocate(vert.data(), vert.size() * sizeof(vec3));
 }
-void pushInIdxBuff(std::vector<vec3> idx){
+void GeometryEngine::pushInIdxBuff(std::vector<unsigned int>& idx){
 
+    indexBuf.bind();
+    indexBuf.allocate(idx.data(),  idx.size() * sizeof(unsigned int));
 }
 
+void GeometryEngine::draw(QOpenGLShaderProgram *program, quintptr offsetArray,quintptr offsetIndex){
+    arrayBuf.bind();
+    indexBuf.bind();
+
+
+
+    // Tell OpenGL programmable pipeline how to locate vertex position data
+    int vertexLocation = program->attributeLocation("a_position");
+    program->enableAttributeArray(vertexLocation);
+    program->setAttributeBuffer(vertexLocation, GL_FLOAT, offsetArray, 3, sizeof(vec3));
+
+    // Offset for texture coordinate
+    offsetArray += sizeof(QVector3D);
+
+    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
+    int texcoordLocation = program->attributeLocation("a_texcoord");
+    program->enableAttributeArray(texcoordLocation);
+    program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offsetArray, 2, sizeof(VertexData));
+
+    // Draw cube geometry using indices from VBO 1
+    glDrawElements(GL_TRIANGLE_STRIP, indexBuf.size(), GL_UNSIGNED_SHORT,&indexBuf+offsetIndex*sizeof(unsigned int)); //Careful update indicesNumber when creating new geometry
+}
 
 void GeometryEngine::initCubeGeometry()
 {

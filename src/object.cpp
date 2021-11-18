@@ -1,4 +1,6 @@
 #include "object.h"
+
+//#include "vec3.h"
 #include <vector>
 #include <iostream>
 
@@ -121,11 +123,10 @@
     std::vector<vec3> Object::render(Transformation transfo){
         std::vector<vec3> res;
         for (int i=0;i<vertex.size();i++){
-            res.push_back(transfo.apply(vertex[i]));
+            res.push_back(vec3(transfo.apply(vertex[i])));
         }
         return res;
     }
-
 
 
 
