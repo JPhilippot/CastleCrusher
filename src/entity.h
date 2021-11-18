@@ -17,6 +17,7 @@
 //#include "transformation.h"
 class Object;
 #include "object.h"
+
 class Entity
 {
     // voir les transform comme en unity
@@ -42,13 +43,14 @@ public:
     Object getObject();
 
     int getID();
-
-    void renderScene(Transformation parentTrans, GeometryEngine geoEngine); //
+    const bool isScene;
+    void renderScene(Transformation parentTrans, GeometryEngine geoEngine);
     long countVertices();
     long countIndices();
 
+
 private:
-    const bool isScene;
+    Object obj;
     QString name;
     static int entityCpt;
     const int id;
