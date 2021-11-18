@@ -26,6 +26,9 @@ Entity::Entity(Entity* parent, bool isAScene) : id(++entityCpt), isScene(isAScen
     this->name ="UnamedEntity";
 
 }
+
+
+
 Entity::Entity(Entity* parent ,QString name,bool isAScene) : id(++entityCpt), isScene(isAScene)
 {
     this->parent = parent;
@@ -41,6 +44,15 @@ Entity::Entity(QString name,bool isAScene) : id(++entityCpt), isScene(isAScene)
 //    this->mesh = Mesh();
     this->name =name;
 
+}
+
+Entity::Entity(Entity* parent, QString name, Object obj, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene)
+{
+    this->parent=parent;
+    this->name=name;
+    this->children=std::vector<Entity*>();
+    this->transfo=transfo;
+    this->obj=obj;
 }
 
 //void Entity::setMesh(Mesh m){

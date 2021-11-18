@@ -25,6 +25,7 @@ public:
     Entity(Entity* parent,bool isAScene = false);
     Entity(QString name,bool isAScene = false);
     Entity(Entity* parent ,QString name,bool isAScene = false);
+    Entity(Entity* parent, QString name, Object obj, Transformation transfo, bool isAScene = false);
     ~Entity();
 
     Entity* getParent();
