@@ -46,7 +46,7 @@ public:
     void renderScene(Transformation parentTrans, GeometryEngine& geoEngine); //
     long countVertices();
     long countIndices();
-    void draw(GeometryEngine& geoE, quintptr sizeYetArr, quintptr sizeYetInd);
+    void draw(GeometryEngine& geoE, QOpenGLShaderProgram *program ,quintptr sizeYetArr, quintptr sizeYetInd);
 
 private:
     const bool isScene;
