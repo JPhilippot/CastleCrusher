@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 //    std::cout<<(a+c).x<<(a+c).y<<(a+c).z<<std::endl;
 
 
-    Entity* e = new Entity(QString("Soleil"),Object(Object::CUBE,1.0f),Transformation(vec3(0.0f,0.0f,0.0f),vec3(0,0,0),vec3(1.0f,1.0f,1.0f)),true);
+    Entity* e = new Entity(QString("Soleil"),Object(Object::CUBE,1.0f),Transformation(vec3(0.0f,0.0f,0.0f),vec3(0,0,45),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.3),true);
 
 //    Entity* enfant = new Entity(e,QString("obj1"),Object(Object::CUBE,0.3f),
 //                          Transformation(),false);
@@ -91,12 +91,12 @@ int main(int argc, char *argv[])
 //                          Transformation(),false);
 
     Entity* enfant = new Entity(e,QString("obj1"),Object(Object::CUBE,0.3f),
-                          Transformation(vec3(1.0f,0.0f,0.0f),mat3(),vec3(1.0f,1.0f,1.0f)),false);
-    Entity* enfant2 = new Entity(e,QString("obj2"),Object(Object::CUBE,0.6f),
-                          Transformation(vec3(-0.0f,1.0f,0.0f),vec3(0,0,0),vec3(1.0f,1.0f,1.0f)),false);
+                          Transformation(vec3(1.0f,0.0f,0.0f),vec3(13.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,-0.2),false);
+    //Entity* enfant2 = new Entity(e,QString("obj2"),Object(Object::CUBE,0.6f),
+      //                    Transformation(vec3(-0.0f,1.0f,0.0f),vec3(0,0,0),vec3(1.0f,1.0f,1.0f)),false);
 
     e->addChild(enfant);
-    e->addChild(enfant2);
+    //e->addChild(enfant2);
 
     std::cout<<"Entity created : "<<e->getEntityName().toStdString()<<std::endl;
 

@@ -1,7 +1,8 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include "vec3.h"
+#include "vec.h"
+#include "mat.h"
 #include <vector>
 #include <iostream>
 

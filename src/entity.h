@@ -10,7 +10,8 @@
 #include <QVector3D>
 #include <QImage>
 #include <vector>
-#include "vec3.h"
+#include "vec.h"
+#include "mat.h"
 
 
 class GeometryEngine;
@@ -28,7 +29,9 @@ public:
     Entity(QString name,bool isAScene = false);
     Entity(Entity* parent ,QString name,bool isAScene = false);
     Entity(QString name, Object obj, Transformation transfo, bool isAScene = true);
+    Entity(QString name, Object obj, Transformation transfo, vec3 myrpf,bool isAScene);
     Entity(Entity* parent, QString name, Object obj, Transformation transfo, bool isAScene = false);
+    Entity(Entity* parent, QString name, Object obj, Transformation transfo, vec3 rpf, bool isAScene = false);
     ~Entity();
 
     Entity* getParent();
@@ -48,10 +51,13 @@ public:
 
     int getID();
 
+    vec3 rpf;
+
     void renderScene(Transformation parentTrans, GeometryEngine* geoEngine);//, std::vector<std::vector<vec3>>* totVerts, std::vector<std::vector<unsigned int>>* totIdx); //
     long countVertices();
     long countIndices();
     void draw(GeometryEngine& geoE, QOpenGLShaderProgram* program ,quintptr sizeYetArr, quintptr sizeYetInd);
+
 
 private:
     const bool isScene;

@@ -1,6 +1,6 @@
 #include "object.h"
 
-//#include "vec3.h"
+//#include "vec.h"
 #include <vector>
 #include <iostream>
 

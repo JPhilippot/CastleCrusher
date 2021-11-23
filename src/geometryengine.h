@@ -60,9 +60,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "vec3.h"
+#include "vec.h"
 #include "transformation.h"
 #include <sstream>
+#include "mat.h"
 class Entity;
 #include "entity.h"
 

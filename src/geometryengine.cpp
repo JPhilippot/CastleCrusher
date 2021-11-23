@@ -623,7 +623,7 @@ void GeometryEngine::loadMesh(const std::string & filename){
 #include "geometryengine.h"
 #include <QVector2D>
 #include <QVector3D>
-#include "vec3.h"
+#include "vec.h"
 
 
 struct VertexData

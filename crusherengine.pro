@@ -15,15 +15,25 @@ SOURCES += ./src/main.cpp \
     ./src/entity.cpp \
     ./src/mainwidget.cpp \
     ./src/geometryengine.cpp \
-    src/transformation.cpp \
-    src/vec3.cpp
+    ./src/transformation.cpp\
+    ./src/model.cpp\
+    ./src/square.cpp\
+    ./src/plane.cpp\
+    ./src/sphere.cpp
 
-HEADERS += ./src/vec3.h \
-    ./src/entity.h \
+MODELS +=
+HEADERS +=./src/entity.h \
     ./src/mainwidget.h \
     ./src/geometryengine.h \
     ./src/object.h\
-     ./src/transformation.h
+     ./src/transformation.h\
+     ./src/vec.h\
+     ./src/mat.h\
+     ./src/model.h\
+     ./src/square.h\
+     ./src/plane.h\
+     ./src/sphere.h
+
 
 RESOURCES += \
     shaders.qrc \

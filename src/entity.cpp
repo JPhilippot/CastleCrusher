@@ -54,6 +54,14 @@ Entity::Entity(QString name, Object obj, Transformation transfo, bool isAScene):
     this->obj=obj;
 }
 
+Entity::Entity(QString name, Object obj, Transformation transfo, vec3 myrpf,bool isAScene):id(++entityCpt),isScene(isAScene){
+    this->name=name;
+    this->children=std::vector<Entity*>();
+    this->transfo=transfo;
+    this->obj=obj;
+    rpf=myrpf;
+}
+
 Entity::Entity(Entity* parent, QString name, Object obj, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene)
 {
     this->parent=parent;
@@ -61,6 +69,16 @@ Entity::Entity(Entity* parent, QString name, Object obj, Transformation transfo,
     this->children=std::vector<Entity*>();
     this->transfo=transfo;
     this->obj=obj;
+}
+
+Entity::Entity(Entity* parent, QString name, Object obj, Transformation transfo, vec3 myrpf,bool isAScene):id(++entityCpt),isScene(isAScene)
+{
+    this->parent=parent;
+    this->name=name;
+    this->children=std::vector<Entity*>();
+    this->transfo=transfo;
+    this->obj=obj;
+    rpf=myrpf;
 }
 
 //void Entity::setMesh(Mesh m){
@@ -169,13 +187,19 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine){
     //std::cout<<"cc je suis rendered"<<std::endl;
 //    totVerts->push_back(std::vector<vec3>(obj.render(parentTrans.compose(transfo))));
 //    totIdx->push_back(std::vector<unsigned int>(obj.ids));
-    transfo=Transformation(transfo.translation,transfo.rotation*mat3::rotationMat(vec3(0.0,0.0,3.14/400)),transfo.scale);
+
+    //bouger avec le temps ?
+
+    transfo=Transformation(Transformation::rotationMatrix(this->rpf)).compose(transfo);
+
+
+//    Transformation::rotationMat(vec3(0.0,0.0,3.14/400))
+//    transfo=Transformation(transfo.translation,transfo.rotation,transfo.scale);
     for (auto child : children){
-        (child)->renderScene(parentTrans.compose(transfo),geoEngine);//,totVerts,totIdx);
+        (child)->renderScene(transfo.compose(parentTrans),geoEngine);//,totVerts,totIdx);
     }
 
-    geoEngine->pushInVertBuff(obj.render(parentTrans.compose(
-                                             transfo)));
+    geoEngine->pushInVertBuff(obj.render(parentTrans.compose(transfo)));
     geoEngine->pushInIdxBuff(obj.ids);
 
 }
