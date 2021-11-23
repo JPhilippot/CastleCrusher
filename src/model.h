@@ -17,7 +17,7 @@ public:
     Model(float size);
     std::vector<vec3> render(Transformation transfo);
 
-    virtual void detectCollision()
+    virtual void detectCollision(Model otherModel);
 
 //    std::vector<vec3> getVertices();
 //    void setVertices(std::vector<vec3> newVertices);
@@ -28,7 +28,7 @@ public:
 //private:
     std::vector<vec3> vertex;
     std::vector<unsigned int> ids;
-
+    std::vector<vec3> collider;
 
 };
 
