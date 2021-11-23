@@ -18,8 +18,8 @@ class GeometryEngine;
 #include "geometryengine.h"
 //class Transformation;
 //#include "transformation.h"
-class Object;
-#include "object.h"
+class Model;
+#include "model.h"
 class Entity
 {
     // voir les transform comme en unity
@@ -28,10 +28,10 @@ public:
     Entity(Entity* parent,bool isAScene = false);
     Entity(QString name,bool isAScene = false);
     Entity(Entity* parent ,QString name,bool isAScene = false);
-    Entity(QString name, Object obj, Transformation transfo, bool isAScene = true);
-    Entity(QString name, Object obj, Transformation transfo, vec3 myrpf,bool isAScene);
-    Entity(Entity* parent, QString name, Object obj, Transformation transfo, bool isAScene = false);
-    Entity(Entity* parent, QString name, Object obj, Transformation transfo, vec3 rpf, bool isAScene = false);
+    Entity(QString name, Model model, Transformation transfo, bool isAScene = true);
+    Entity(QString name, Model model, Transformation transfo, vec3 myrpf,bool isAScene);
+    Entity(Entity* parent, QString name, Model model, Transformation transfo, bool isAScene = false);
+    Entity(Entity* parent, QString name, Model model, Transformation transfo, vec3 rpf, bool isAScene = false);
     ~Entity();
 
     Entity* getParent();
@@ -47,7 +47,7 @@ public:
     QString getEntityName();
     void renameEntity(QString newName);
 
-    Object getObject();
+    Model getModel();
 
     int getID();
 
@@ -67,9 +67,9 @@ private:
     Entity* parent;
     std::vector<Entity*> children;
     Transformation transfo;
-    Object obj;
+    Model model;
 
-    std::vector<vec3> renderObject(Transformation parentTrans);
+    std::vector<vec3> renderModel(Transformation parentTrans);
 
 };
 

@@ -58,13 +58,14 @@
 #include <QString>
 #include <string>
 #include <time.h>
+#include "cube.h"
 #endif
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-//    Object test = Object(Object::CUBE,1.0f);
+//    Model test = Model(Model::CUBE,1.0f);
 //    for (int i=0;i<test.vertex.size();i++){
 //        std::cout<<test.vertex[i].x<<test.vertex[i].y<<test.vertex[i].z<<std::endl;
 //    }
@@ -83,16 +84,16 @@ int main(int argc, char *argv[])
 //    std::cout<<(a+c).x<<(a+c).y<<(a+c).z<<std::endl;
 
 
-    Entity* e = new Entity(QString("Soleil"),Object(Object::CUBE,1.0f),Transformation(vec3(0.0f,0.0f,0.0f),vec3(0,0,45),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.3),true);
+    Entity* e = new Entity(QString("Soleil"),Cube(1.0f),Transformation(vec3(0.0f,0.0f,0.0f),vec3(0,0,45),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.3),true);
 
-//    Entity* enfant = new Entity(e,QString("obj1"),Object(Object::CUBE,0.3f),
+//    Entity* enfant = new Entity(e,QString("model1"),Model(Model::CUBE,0.3f),
 //                          Transformation(),false);
-//    Entity* enfant2 = new Entity(e,QString("obj2"),Object(Object::CUBE,0.6f),
+//    Entity* enfant2 = new Entity(e,QString("model2"),Model(Model::CUBE,0.6f),
 //                          Transformation(),false);
 
-    Entity* enfant = new Entity(e,QString("obj1"),Object(Object::CUBE,0.3f),
+    Entity* enfant = new Entity(e,QString("model1"),Cube(0.3f),
                           Transformation(vec3(1.0f,0.0f,0.0f),vec3(13.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,-0.2),false);
-    //Entity* enfant2 = new Entity(e,QString("obj2"),Object(Object::CUBE,0.6f),
+    //Entity* enfant2 = new Entity(e,QString("model2"),Model(Model::CUBE,0.6f),
       //                    Transformation(vec3(-0.0f,1.0f,0.0f),vec3(0,0,0),vec3(1.0f,1.0f,1.0f)),false);
 
     e->addChild(enfant);

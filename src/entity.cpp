@@ -47,41 +47,41 @@ Entity::Entity(QString name,bool isAScene) : id(++entityCpt), isScene(isAScene)
 
 }
 
-Entity::Entity(QString name, Object obj, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene){
+Entity::Entity(QString name, Model model, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene){
     this->name=name;
     this->children=std::vector<Entity*>();
     this->transfo=transfo;
-    this->obj=obj;
+    this->model=model;
 }
 
-Entity::Entity(QString name, Object obj, Transformation transfo, vec3 myrpf,bool isAScene):id(++entityCpt),isScene(isAScene){
+Entity::Entity(QString name, Model model, Transformation transfo, vec3 myrpf,bool isAScene):id(++entityCpt),isScene(isAScene){
     this->name=name;
     this->children=std::vector<Entity*>();
     this->transfo=transfo;
-    this->obj=obj;
+    this->model=model;
     rpf=myrpf;
 }
 
-Entity::Entity(Entity* parent, QString name, Object obj, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene)
+Entity::Entity(Entity* parent, QString name, Model model, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene)
 {
     this->parent=parent;
     this->name=name;
     this->children=std::vector<Entity*>();
     this->transfo=transfo;
-    this->obj=obj;
+    this->model=model;
 }
 
-Entity::Entity(Entity* parent, QString name, Object obj, Transformation transfo, vec3 myrpf,bool isAScene):id(++entityCpt),isScene(isAScene)
+Entity::Entity(Entity* parent, QString name, Model model, Transformation transfo, vec3 myrpf,bool isAScene):id(++entityCpt),isScene(isAScene)
 {
     this->parent=parent;
     this->name=name;
     this->children=std::vector<Entity*>();
     this->transfo=transfo;
-    this->obj=obj;
+    this->model=model;
     rpf=myrpf;
 }
 
-//void Entity::setMesh(Mesh m){
+//void Entity::setMesh(Mesh m
 //    this->mesh = m;
 //}
 //Mesh Entity::getMesh(){
@@ -120,14 +120,14 @@ long Entity::countVertices(){
     for (int i=0;i<children.size();i++){
         res+=children[i]->countVertices();
     }
-    return this->obj.vertex.size()+res;
+    return this->model.vertex.size()+res;
 }
 long Entity::countIndices(){
     long res=0;
     for (int i=0;i<children.size();i++){
         res+=children[i]->countIndices();
     }
-    return this->obj.ids.size()+res;
+    return this->model.ids.size()+res;
 }
 
 void Entity::addChild(Entity* child){
@@ -175,8 +175,8 @@ void Entity::renameEntity(QString newName){
     this->name = newName;
 }
 
-Object Entity::getObject(){
-    return this->obj;
+Model Entity::getModel(){
+    return this->model;
 }
 
 std::vector<Entity*> Entity::getChildren(){
@@ -185,8 +185,8 @@ std::vector<Entity*> Entity::getChildren(){
 
 void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine){//, std::vector<std::vector<vec3>>* totVerts, std::vector<std::vector<unsigned int>>* totIdx){ //
     //std::cout<<"cc je suis rendered"<<std::endl;
-//    totVerts->push_back(std::vector<vec3>(obj.render(parentTrans.compose(transfo))));
-//    totIdx->push_back(std::vector<unsigned int>(obj.ids));
+//    totVerts->push_back(std::vector<vec3>(model.render(parentTrans.compose(transfo))));
+//    totIdx->push_back(std::vector<unsigned int>(model.ids));
 
     //bouger avec le temps ?
 
@@ -199,18 +199,18 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine){
         (child)->renderScene(transfo.compose(parentTrans),geoEngine);//,totVerts,totIdx);
     }
 
-    geoEngine->pushInVertBuff(obj.render(parentTrans.compose(transfo)));
-    geoEngine->pushInIdxBuff(obj.ids);
+    geoEngine->pushInVertBuff(model.render(parentTrans.compose(transfo)));
+    geoEngine->pushInIdxBuff(model.ids);
 
 }
 
 //void Entity::draw(GeometryEngine& geoE,QOpenGLShaderProgram* program, quintptr sizeYetArr, quintptr sizeYetInd){
   //  geoE.draw(program);
 //    for (auto child : children){
-//        child->draw(geoE,program,sizeYetArr+obj.vertex.size(),sizeYetInd+obj.ids.size());
+//        child->draw(geoE,program,sizeYetArr+model.vertex.size(),sizeYetInd+model.ids.size());
 //    }
 //}
 
-std::vector<vec3> Entity::renderObject(Transformation parentTrans){
-    return obj.render(parentTrans.compose(transfo));
+std::vector<vec3> Entity::renderModel(Transformation parentTrans){
+    return model.render(parentTrans.compose(transfo));
 }

@@ -14,8 +14,10 @@ class Model
 public:
     Model();
     Model(std::vector<vec3> vert, std::vector<unsigned int> indices);
-
+    Model(float size);
     std::vector<vec3> render(Transformation transfo);
+
+    virtual void detectCollision()
 
 //    std::vector<vec3> getVertices();
 //    void setVertices(std::vector<vec3> newVertices);
@@ -26,6 +28,7 @@ public:
 //private:
     std::vector<vec3> vertex;
     std::vector<unsigned int> ids;
+
 
 };
 

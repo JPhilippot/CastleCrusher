@@ -17,7 +17,7 @@ SOURCES += ./src/main.cpp \
     ./src/geometryengine.cpp \
     ./src/transformation.cpp\
     ./src/model.cpp\
-    ./src/square.cpp\
+    ./src/cube.cpp\
     ./src/plane.cpp\
     ./src/sphere.cpp
 
@@ -30,7 +30,7 @@ HEADERS +=./src/entity.h \
      ./src/vec.h\
      ./src/mat.h\
      ./src/model.h\
-     ./src/square.h\
+     ./src/cube.h\
      ./src/plane.h\
      ./src/sphere.h
 
