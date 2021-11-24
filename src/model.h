@@ -13,22 +13,13 @@ class Model
 {
 public:
     Model();
-    Model(std::vector<vec3> vert, std::vector<unsigned int> indices);
+    //Model(std::vector<vec3> vert, std::vector<unsigned int> indices);
     Model(float size);
     std::vector<vec3> render(Transformation transfo);
 
-    virtual void detectCollision(Model otherModel);
-
-//    std::vector<vec3> getVertices();
-//    void setVertices(std::vector<vec3> newVertices);
-
-//    std::vector<unsigned int> getIds();
-//    void setIds(std::vector<unsigned int> newIds);
-
-//private:
+    virtual std::vector<vec3> getCollisonArea(int granularity);// Je décide de calculer la zone de collision directement dans le modèle, en fonction de la granularité désirée. Cette zone va être renvoyée dans un vector lors de son appel, dans Collider::collidesWith(), et c'est dans cette fonction qu'en fonction on va demander une zone de collision plus ou moins fine (granularité : AABB -> PCA -> CH);
     std::vector<vec3> vertex;
     std::vector<unsigned int> ids;
-    std::vector<vec3> collider;
 
 };
 

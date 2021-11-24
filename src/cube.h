@@ -6,8 +6,8 @@ class Cube : public Model
 {
 public:
     Cube();
-    Cube(std::vector<vec3> vert, std::vector<unsigned int> indices);
     Cube(float size);
+    std::vector<vec3> getCollisonArea(int granularity) override;
 };
 
 #endif // CUBE_H

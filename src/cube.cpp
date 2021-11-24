@@ -24,9 +24,6 @@ Cube::Cube()
 
 }
 
-Cube::Cube(std::vector<vec3> vert, std::vector<unsigned int> indices){
-    vertex=vert;ids=indices;
-}
 Cube::Cube(float size){
     vertex=std::vector<vec3>();
 
@@ -47,4 +44,8 @@ Cube::Cube(float size){
          6,0,2,0,6,4,
          2,6,7,2,7,3,
          0,1,5,0,5,4};
+}
+
+std::vector<vec3> Cube::getCollisonArea(int granularity) {
+
 }

@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 //                          Transformation(),false);
 
     Entity* enfant = new Entity(e,QString("model1"),Cube(0.3f),
-                          Transformation(vec3(1.0f,0.0f,0.0f),vec3(13.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,-0.2),false);
+                          Transformation(vec3(1.0f,0.0f,0.0f),vec3(20.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,-0.2),false);
     //Entity* enfant2 = new Entity(e,QString("model2"),Model(Model::CUBE,0.6f),
       //                    Transformation(vec3(-0.0f,1.0f,0.0f),vec3(0,0,0),vec3(1.0f,1.0f,1.0f)),false);
 
