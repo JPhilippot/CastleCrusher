@@ -9,6 +9,7 @@ Entity::~Entity(){
     }
     //delete this->parent;
     this->children.clear();
+    // we'll need to delete all components properly
     //delete this;
 }
 
@@ -18,6 +19,9 @@ Entity::Entity(bool isAScene) : id(++entityCpt), isScene(isAScene)
     this->children= std::vector<Entity*>();
 //    this->mesh = Mesh();
     this->name ="UnamedEntity";
+
+    std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
+
 }
 Entity::Entity(Entity* parent, bool isAScene) : id(++entityCpt), isScene(isAScene)
 {
@@ -25,6 +29,8 @@ Entity::Entity(Entity* parent, bool isAScene) : id(++entityCpt), isScene(isAScen
     this->children= std::vector<Entity*>();
 //    this->mesh = Mesh();
     this->name ="UnamedEntity";
+
+    std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
 
 }
 
@@ -37,6 +43,9 @@ Entity::Entity(Entity* parent ,QString name,bool isAScene) : id(++entityCpt), is
 //    this->mesh = Mesh();
     this->name =name;
 
+    std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
+
+
 }
 Entity::Entity(QString name,bool isAScene) : id(++entityCpt), isScene(isAScene)
 {
@@ -45,6 +54,8 @@ Entity::Entity(QString name,bool isAScene) : id(++entityCpt), isScene(isAScene)
 //    this->mesh = Mesh();
     this->name =name;
 
+    std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
+
 }
 
 Entity::Entity(QString name, Model model, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene){
@@ -52,14 +63,21 @@ Entity::Entity(QString name, Model model, Transformation transfo, bool isAScene)
     this->children=std::vector<Entity*>();
     this->transfo=transfo;
     this->model=model;
+
+    std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
+
 }
 
-Entity::Entity(QString name, Model model, Transformation transfo, vec3 myrpf,bool isAScene):id(++entityCpt),isScene(isAScene){
+Entity::Entity(QString name, Model model, Transformation transfo, vec3 myrpf,Collider* col,bool isAScene):id(++entityCpt),isScene(isAScene){
     this->name=name;
     this->children=std::vector<Entity*>();
     this->transfo=transfo;
     this->model=model;
     rpf=myrpf;
+    this->collider = col;
+
+    std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
+
 }
 
 Entity::Entity(Entity* parent, QString name, Model model, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene)
@@ -69,6 +87,8 @@ Entity::Entity(Entity* parent, QString name, Model model, Transformation transfo
     this->children=std::vector<Entity*>();
     this->transfo=transfo;
     this->model=model;
+
+    std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
 }
 
 Entity::Entity(Entity* parent, QString name, Model model, Transformation transfo, vec3 myrpf,bool isAScene):id(++entityCpt),isScene(isAScene)
@@ -79,14 +99,26 @@ Entity::Entity(Entity* parent, QString name, Model model, Transformation transfo
     this->transfo=transfo;
     this->model=model;
     rpf=myrpf;
+    std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
 }
 
-//void Entity::setMesh(Mesh m
-//    this->mesh = m;
-//}
-//Mesh Entity::getMesh(){
-//    return this->mesh;
-//}
+
+Entity::Entity(Entity* parent, QString name, Model model, Transformation transfo, vec3 myrpf,Collider* col,bool isAScene):id(++entityCpt),isScene(isAScene)
+{
+    this->parent=parent;
+    this->name=name;
+    this->children=std::vector<Entity*>();
+    this->transfo=transfo;
+    this->model=model;
+    rpf=myrpf;
+    this->collider = col;
+    std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
+}
+
+std::string Entity::print(){
+    return this->name.toStdString() +" | id:"+ std::to_string(this->id);
+}
+
 
 int Entity::getID(){
     return this->id;
@@ -199,6 +231,7 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine){
         (child)->renderScene(transfo.compose(parentTrans),geoEngine);//,totVerts,totIdx);
     }
 
+
     geoEngine->pushInVertBuff(model.render(parentTrans.compose(transfo)));
     geoEngine->pushInIdxBuff(model.ids);
 
@@ -213,4 +246,25 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine){
 
 std::vector<vec3> Entity::renderModel(Transformation parentTrans){
     return model.render(parentTrans.compose(transfo));
+}
+
+Transformation Entity::getTransfo(){
+    return this->transfo;
+}
+
+void Entity::detectCollision(){
+    if(this->collider == nullptr){
+        std::cout<<"No need to calculate detections for "<< this->print()<< ", this entity has no collider."<<std::endl;
+    }else {
+        //We need to setup a clever way to detect all possible collision
+        // I'm just doing this for tests purposes
+
+        for(auto c : this->children){
+            this->collider->collidesWith(c);
+        }
+    }
+}
+
+bool Entity::hasCollider(){
+    return this->collider != nullptr;
 }

@@ -59,6 +59,7 @@
 #include <string>
 #include <time.h>
 #include "cube.h"
+#include "collider.h"
 #endif
 
 int main(int argc, char *argv[])
@@ -84,7 +85,7 @@ int main(int argc, char *argv[])
 //    std::cout<<(a+c).x<<(a+c).y<<(a+c).z<<std::endl;
 
 
-    Entity* e = new Entity(QString("Soleil"),Cube(1.0f),Transformation(vec3(0.0f,0.0f,0.0f),vec3(0,0,45),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.3),true);
+    Entity* e = new Entity(QString("Soleil"),Cube(1.0f),Transformation(vec3(0.0f,0.0f,0.0f),vec3(0,0,45),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.3),new Collider(e),true);
 
 //    Entity* enfant = new Entity(e,QString("model1"),Model(Model::CUBE,0.3f),
 //                          Transformation(),false);
@@ -92,16 +93,14 @@ int main(int argc, char *argv[])
 //                          Transformation(),false);
 
     Entity* enfant = new Entity(e,QString("model1"),Cube(0.3f),
-                          Transformation(vec3(1.0f,0.0f,0.0f),vec3(20.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,-0.2),false);
+                          Transformation(vec3(1.0f,0.0f,0.0f),vec3(20.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,-0.2),nullptr,false);
     //Entity* enfant2 = new Entity(e,QString("model2"),Model(Model::CUBE,0.6f),
       //                    Transformation(vec3(-0.0f,1.0f,0.0f),vec3(0,0,0),vec3(1.0f,1.0f,1.0f)),false);
 
     e->addChild(enfant);
     //e->addChild(enfant2);
 
-    std::cout<<"Entity created : "<<e->getEntityName().toStdString()<<std::endl;
-
-    std::cout<<"Enfants?"<<(int)(e->getChildren().size())<<std::endl;
+    std::cout<<"Enfants? "<<(int)(e->getChildren().size())<<std::endl;
     QSurfaceFormat format;
     format.setDepthBufferSize(24);
     QSurfaceFormat::setDefaultFormat(format);

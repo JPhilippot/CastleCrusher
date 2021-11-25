@@ -1,7 +1,6 @@
 #include "model.h"
 
 Model::Model(){
-
 }
 std::vector<vec3> Model::render(Transformation transfo){
     std::vector<vec3> res;
@@ -10,17 +9,6 @@ std::vector<vec3> Model::render(Transformation transfo){
     }
     return res;
 }
-
-//std::vector<vec3> Model::getVertices(){
-//    return *vertex;
-//}
-//void Model::setVertices(std::vector<vec3> newVertices){
-//    this->vertex
-//}
-
-//std::vector<unsigned int> Model::getIds(){
-
-//}
-//void Model::setIds(std::vector<unsigned int> newIds){
-
-//}
+std::vector<vec3> Model::getCollisonArea(int granularity, Transformation myEntityTransfo){
+    //please specify this function in child
+}

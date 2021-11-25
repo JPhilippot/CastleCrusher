@@ -325,6 +325,9 @@ void MainWidget::paintGL()
 
     //renderscene here -> add root to widget
     entity->renderScene(Transformation(),geometries);
+    // !!!! Testing collision, needs to be cleaned up !!!!
+    entity->detectCollision();
+
     geometries->draw(&program);
     update();
 }
