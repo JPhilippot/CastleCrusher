@@ -55,14 +55,15 @@
 #include <math.h>
 
 
-MainWidget::MainWidget(Entity* e, QWidget *parent) :
+MainWidget::MainWidget(Entity* e,PhysicsEngine* p, QWidget *parent) :
     QOpenGLWidget(parent),
     geometries(0),
     textureR(0),
     textureG(0),
     textureS(0),
     angularSpeed(0),
-    entity(e)
+    entity(e),
+    pEngine(p)
 {
 }
 
@@ -324,10 +325,11 @@ void MainWidget::paintGL()
 
 
     //renderscene here -> add root to widget
-    entity->renderScene(Transformation(),geometries);
+    pEngine->clearCollisionValues();
+    entity->renderScene(Transformation(),geometries,pEngine);
     // !!!! Testing collision, needs to be cleaned up !!!!
-    entity->detectCollision();
-
+    //entity->detectCollision();
+    pEngine->printCollisionValues();
     geometries->draw(&program);
     update();
 }

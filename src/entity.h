@@ -12,6 +12,7 @@
 #include <vector>
 #include "vec.h"
 #include "mat.h"
+#include "physicsengine.h"
 
 
 class GeometryEngine;
@@ -22,6 +23,7 @@ class Model;
 #include "model.h"
 class Collider;
 #include"collider.h"
+class PhysicsEngine;
 class Entity
 {
     // voir les transform comme en unity
@@ -57,13 +59,14 @@ public:
     vec3 rpf;
 
     bool hasCollider();
-    void renderScene(Transformation parentTrans, GeometryEngine* geoEngine);//, std::vector<std::vector<vec3>>* totVerts, std::vector<std::vector<unsigned int>>* totIdx); //
+    void renderScene(Transformation parentTrans, GeometryEngine* geoEngine,PhysicsEngine* p = nullptr);//, std::vector<std::vector<vec3>>* totVerts, std::vector<std::vector<unsigned int>>* totIdx); //
     long countVertices();
     long countIndices();
     void draw(GeometryEngine& geoE, QOpenGLShaderProgram* program ,quintptr sizeYetArr, quintptr sizeYetInd);
     void detectCollision();
     Transformation getTransfo();
     std::string print();
+    bool hasChild();
 
 private:
     const bool isScene;

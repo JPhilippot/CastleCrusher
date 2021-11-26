@@ -60,6 +60,7 @@
 #include <time.h>
 #include "cube.h"
 #include "collider.h"
+#include "physicsengine.h"
 #endif
 
 int main(int argc, char *argv[])
@@ -84,7 +85,7 @@ int main(int argc, char *argv[])
 //    std::cout<<a.x<<a.y<<a.z<<std::endl;
 //    std::cout<<(a+c).x<<(a+c).y<<(a+c).z<<std::endl;
 
-
+    PhysicsEngine* p = new PhysicsEngine();
     Entity* e = new Entity(QString("Soleil"),Cube(1.0f),Transformation(vec3(0.0f,0.0f,0.0f),vec3(0,0,45),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.3),new Collider(e),true);
 
 //    Entity* enfant = new Entity(e,QString("model1"),Model(Model::CUBE,0.3f),
@@ -114,7 +115,7 @@ int main(int argc, char *argv[])
 
 #ifndef QT_NO_OPENGL
     //GeometryEngine* geoE =new  GeometryEngine(e);
-    MainWidget widget(e);
+    MainWidget widget(e,p);
     widget.show();
 
     //e->renderScene(Transformation(),*geoE);

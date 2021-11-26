@@ -215,7 +215,7 @@ std::vector<Entity*> Entity::getChildren(){
     return children;
 }
 
-void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine){//, std::vector<std::vector<vec3>>* totVerts, std::vector<std::vector<unsigned int>>* totIdx){ //
+void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine, PhysicsEngine* p){//, std::vector<std::vector<vec3>>* totVerts, std::vector<std::vector<unsigned int>>* totIdx){ //
     //std::cout<<"cc je suis rendered"<<std::endl;
 //    totVerts->push_back(std::vector<vec3>(model.render(parentTrans.compose(transfo))));
 //    totIdx->push_back(std::vector<unsigned int>(model.ids));
@@ -223,12 +223,14 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine){
     //bouger avec le temps ?
 
     transfo=Transformation(Transformation::rotationMatrix(this->rpf)).compose(transfo);
-
+    if(p != nullptr){
+        p->collectCollisionValue(this,this->model.getCollisonArea(0,this->transfo));
+    }
 
 //    Transformation::rotationMat(vec3(0.0,0.0,3.14/400))
 //    transfo=Transformation(transfo.translation,transfo.rotation,transfo.scale);
     for (auto child : children){
-        (child)->renderScene(transfo.compose(parentTrans),geoEngine);//,totVerts,totIdx);
+        (child)->renderScene(transfo.compose(parentTrans),geoEngine,p);//,totVerts,totIdx);
     }
 
 
@@ -267,4 +269,8 @@ void Entity::detectCollision(){
 
 bool Entity::hasCollider(){
     return this->collider != nullptr;
+}
+
+bool Entity::hasChild(){
+ return this->children.empty();
 }

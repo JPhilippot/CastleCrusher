@@ -9,6 +9,6 @@ std::vector<vec3> Model::render(Transformation transfo){
     }
     return res;
 }
-std::vector<vec3> Model::getCollisonArea(int granularity, Transformation myEntityTransfo){
+std::vector<float> Model::getCollisonArea(int granularity, Transformation myEntityTransfo){
     //please specify this function in child
 }

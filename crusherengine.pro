@@ -20,7 +20,8 @@ SOURCES += ./src/main.cpp \
     ./src/cube.cpp\
     ./src/plane.cpp\
     ./src/sphere.cpp \
-    src/collider.cpp
+    src/collider.cpp \
+    src/physicsengine.cpp
 
 MODELS +=
 HEADERS +=./src/entity.h \
@@ -34,7 +35,8 @@ HEADERS +=./src/entity.h \
      ./src/cube.h\
      ./src/plane.h\
      ./src/sphere.h \
-    src/collider.h
+    src/collider.h \
+    src/physicsengine.h
 
 
 RESOURCES += \

@@ -7,9 +7,9 @@ class Cube : public Model
 public:
     Cube();
     Cube(float size);
-    std::vector<vec3> getCollisonArea(int granularity,Transformation myEntityTransfo) override;
+    std::vector<float> getCollisonArea(int granularity,Transformation myEntityTransfo) override;
 private:
-   std::vector<vec3> getAABB(Transformation t);
+   std::vector<float> getAABB(Transformation t);
 };
 
 #endif // CUBE_H

@@ -62,6 +62,8 @@
 #include <QOpenGLTexture>
 class Entity;
 #include "entity.h"
+#include "physicsengine.h"
+class PhysicsEngine;
 class GeometryEngine;
 
 #include "geometryengine.h"
@@ -71,11 +73,12 @@ class MainWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_1
     Q_OBJECT
 
 public:
-    explicit MainWidget(Entity* e,QWidget *parent = 0);
+    explicit MainWidget(Entity* e,PhysicsEngine* p,QWidget *parent = 0);
     ~MainWidget();
     GeometryEngine *geometries;
     QOpenGLShaderProgram program;
     Entity* entity;
+    PhysicsEngine* pEngine;
       void initializeGL() override;
 
 
