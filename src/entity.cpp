@@ -13,26 +13,26 @@ Entity::~Entity(){
     //delete this;
 }
 
-Entity::Entity(bool isAScene) : id(++entityCpt), isScene(isAScene)
-{
-    this->parent = nullptr;
-    this->children= std::vector<Entity*>();
-//    this->mesh = Mesh();
-    this->name ="UnamedEntity";
+//Entity::Entity(bool isAScene) : id(++entityCpt), isScene(isAScene)
+//{
+//    this->parent = nullptr;
+//    this->children= std::vector<Entity*>();
+////    this->mesh = Mesh();
+//    this->name ="UnamedEntity";
 
-    std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
+//    std::cout<<"Entity created : "<<this->name.toStdString() << " | id zzzzzzzzzzzzz:"<< this->id <<std::endl;
 
-}
-Entity::Entity(Entity* parent, bool isAScene) : id(++entityCpt), isScene(isAScene)
-{
-    this->parent = parent;
-    this->children= std::vector<Entity*>();
-//    this->mesh = Mesh();
-    this->name ="UnamedEntity";
+//}
+//Entity::Entity(Entity* parent, bool isAScene) : id(++entityCpt), isScene(isAScene)
+//{
+//    this->parent = parent;
+//    this->children= std::vector<Entity*>();
+////    this->mesh = Mesh();
+//    this->name ="UnamedEntity";
 
-    std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
+//    std::cout<<"Entity created : "<<this->name.toStdString() << " | id ddddddddddddd:"<< this->id <<std::endl;
 
-}
+//}
 
 
 
@@ -260,7 +260,7 @@ void Entity::detectCollision(){
         // I'm just doing this for tests purposes
 
         for(auto c : this->children){
-            this->collider->collidesWith(c);
+            this->collider->collidesWith(*c);
         }
     }
 }

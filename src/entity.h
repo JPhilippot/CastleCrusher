@@ -26,8 +26,8 @@ class Entity
 {
     // voir les transform comme en unity
 public:
-    Entity(bool isAScene = false);
-    Entity(Entity* parent,bool isAScene = false);
+//    Entity(bool isAScene = false);
+//    Entity(Entity* parent,bool isAScene = false);
     Entity(QString name,bool isAScene = false);
     Entity(Entity* parent ,QString name,bool isAScene = false);
     Entity(QString name, Model model, Transformation transfo, bool isAScene = false);

@@ -119,9 +119,7 @@ int main(int argc, char *argv[])
 
     //e->renderScene(Transformation(),*geoE);
     //e->draw(*widget.geometries,&widget.program,0,0);
-    std::cout<<"M1"<<std::endl;
 
-    std::cout<<"M2"<<std::endl;
 #else
     QLabel note("OpenGL Support required");
     note.show();
