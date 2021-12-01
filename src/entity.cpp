@@ -58,7 +58,7 @@ Entity::Entity(QString name,bool isAScene) : id(++entityCpt), isScene(isAScene)
 
 }
 
-Entity::Entity(QString name, Model model, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene){
+Entity::Entity(QString name, Model* model, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene){
     this->name=name;
     this->children=std::vector<Entity*>();
     this->transfo=transfo;
@@ -68,7 +68,7 @@ Entity::Entity(QString name, Model model, Transformation transfo, bool isAScene)
 
 }
 
-Entity::Entity(QString name, Model model, Transformation transfo, vec3 myrpf,Collider* col,bool isAScene):id(++entityCpt),isScene(isAScene){
+Entity::Entity(QString name, Model* model, Transformation transfo, vec3 myrpf,Collider* col,bool isAScene):id(++entityCpt),isScene(isAScene){
     this->name=name;
     this->children=std::vector<Entity*>();
     this->transfo=transfo;
@@ -80,7 +80,7 @@ Entity::Entity(QString name, Model model, Transformation transfo, vec3 myrpf,Col
 
 }
 
-Entity::Entity(Entity* parent, QString name, Model model, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene)
+Entity::Entity(Entity* parent, QString name, Model* model, Transformation transfo, bool isAScene):id(++entityCpt),isScene(isAScene)
 {
     this->parent=parent;
     this->name=name;
@@ -91,7 +91,7 @@ Entity::Entity(Entity* parent, QString name, Model model, Transformation transfo
     std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
 }
 
-Entity::Entity(Entity* parent, QString name, Model model, Transformation transfo, vec3 myrpf,bool isAScene):id(++entityCpt),isScene(isAScene)
+Entity::Entity(Entity* parent, QString name, Model* model, Transformation transfo, vec3 myrpf,bool isAScene):id(++entityCpt),isScene(isAScene)
 {
     this->parent=parent;
     this->name=name;
@@ -103,7 +103,7 @@ Entity::Entity(Entity* parent, QString name, Model model, Transformation transfo
 }
 
 
-Entity::Entity(Entity* parent, QString name, Model model, Transformation transfo, vec3 myrpf,Collider* col,bool isAScene):id(++entityCpt),isScene(isAScene)
+Entity::Entity(Entity* parent, QString name, Model* model, Transformation transfo, vec3 myrpf,Collider* col,bool isAScene):id(++entityCpt),isScene(isAScene)
 {
     this->parent=parent;
     this->name=name;
@@ -152,14 +152,14 @@ long Entity::countVertices(){
     for (int i=0;i<children.size();i++){
         res+=children[i]->countVertices();
     }
-    return this->model.vertex.size()+res;
+    return this->model->vertex.size()+res;
 }
 long Entity::countIndices(){
     long res=0;
     for (int i=0;i<children.size();i++){
         res+=children[i]->countIndices();
     }
-    return this->model.ids.size()+res;
+    return this->model->ids.size()+res;
 }
 
 void Entity::addChild(Entity* child){
@@ -207,7 +207,7 @@ void Entity::renameEntity(QString newName){
     this->name = newName;
 }
 
-Model Entity::getModel(){
+Model* Entity::getModel(){
     return this->model;
 }
 
@@ -224,7 +224,7 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine, 
 
     transfo=Transformation(Transformation::rotationMatrix(this->rpf)).compose(transfo);
     if(p != nullptr){
-        p->collectCollisionValue(this,this->model.getCollisonArea(0,this->transfo));
+        p->collectCollisionValue(this,this->model->getCollisonArea(0,this->transfo));
     }
 
 //    Transformation::rotationMat(vec3(0.0,0.0,3.14/400))
@@ -234,8 +234,8 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine, 
     }
 
 
-    geoEngine->pushInVertBuff(model.render(parentTrans.compose(transfo)));
-    geoEngine->pushInIdxBuff(model.ids);
+    geoEngine->pushInVertBuff(model->render(parentTrans.compose(transfo)));
+    geoEngine->pushInIdxBuff(model->ids);
 
 }
 
@@ -247,7 +247,7 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine, 
 //}
 
 std::vector<vec3> Entity::renderModel(Transformation parentTrans){
-    return model.render(parentTrans.compose(transfo));
+    return model->render(parentTrans.compose(transfo));
 }
 
 Transformation Entity::getTransfo(){

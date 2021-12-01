@@ -32,11 +32,11 @@ public:
 //    Entity(Entity* parent,bool isAScene = false);
     Entity(QString name,bool isAScene = false);
     Entity(Entity* parent ,QString name,bool isAScene = false);
-    Entity(QString name, Model model, Transformation transfo, bool isAScene = false);
-    Entity(QString name, Model model, Transformation transfo, vec3 myrpf,Collider * col = nullptr,bool isAScene = false);
-    Entity(Entity* parent, QString name, Model model, Transformation transfo, bool isAScene = false);
-    Entity(Entity* parent, QString name, Model model, Transformation transfo, vec3 rpf, bool isAScene = false);   
-    Entity(Entity* parent, QString name, Model model, Transformation transfo, vec3 rpf, Collider * col = nullptr,bool isAScene = false);
+    Entity(QString name, Model* model, Transformation transfo, bool isAScene = false);
+    Entity(QString name, Model* model, Transformation transfo, vec3 myrpf,Collider * col = nullptr,bool isAScene = false);
+    Entity(Entity* parent, QString name, Model* model, Transformation transfo, bool isAScene = false);
+    Entity(Entity* parent, QString name, Model* model, Transformation transfo, vec3 rpf, bool isAScene = false);
+    Entity(Entity* parent, QString name, Model* model, Transformation transfo, vec3 rpf, Collider * col = nullptr,bool isAScene = false);
     ~Entity();
 
     Entity* getParent();
@@ -52,7 +52,7 @@ public:
     QString getEntityName();
     void renameEntity(QString newName);
 
-    Model getModel();
+    Model* getModel();
 
     int getID();
 
@@ -76,7 +76,7 @@ private:
     Entity* parent;
     std::vector<Entity*> children;
     Transformation transfo;
-    Model model;
+    Model* model;
     Collider* collider = nullptr;
     std::vector<vec3> renderModel(Transformation parentTrans);
 

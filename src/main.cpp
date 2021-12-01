@@ -86,14 +86,14 @@ int main(int argc, char *argv[])
 //    std::cout<<(a+c).x<<(a+c).y<<(a+c).z<<std::endl;
 
     PhysicsEngine* p = new PhysicsEngine();
-    Entity* e = new Entity(QString("Soleil"),Cube(1.0f),Transformation(vec3(0.0f,0.0f,0.0f),vec3(0,0,45),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.3),new Collider(e),true);
+    Entity* e = new Entity(QString("Soleil"),new Cube(1.0f),Transformation(vec3(0.0f,0.0f,0.0f),vec3(0,0,45),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.3),new Collider(e),true);
 
 //    Entity* enfant = new Entity(e,QString("model1"),Model(Model::CUBE,0.3f),
 //                          Transformation(),false);
 //    Entity* enfant2 = new Entity(e,QString("model2"),Model(Model::CUBE,0.6f),
 //                          Transformation(),false);
 
-    Entity* enfant = new Entity(e,QString("model1"),Cube(0.3f),
+    Entity* enfant = new Entity(e,QString("model1"),new Cube(0.3f),
                           Transformation(vec3(1.0f,0.0f,0.0f),vec3(20.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,-0.2),nullptr,false);
     //Entity* enfant2 = new Entity(e,QString("model2"),Model(Model::CUBE,0.6f),
       //                    Transformation(vec3(-0.0f,1.0f,0.0f),vec3(0,0,0),vec3(1.0f,1.0f,1.0f)),false);
