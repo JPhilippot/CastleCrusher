@@ -329,6 +329,7 @@ void MainWidget::paintGL()
     entity->renderScene(Transformation(),geometries,pEngine);
     // !!!! Testing collision, needs to be cleaned up !!!!
     //entity->detectCollision();
+    pEngine->resolveCollisionsFromRoot(entity);
     pEngine->printCollisionValues();
     geometries->draw(&program);
     update();

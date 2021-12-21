@@ -19,49 +19,60 @@ void PhysicsEngine::clearCollisionValues(){
  arr[] --> Array to be sorted,
   low  --> Starting index,
   high  --> Ending index */
-void quickSort(std::vector<collisionBoxValue> &arr, int low, int high)
-{
-    if (low < high)
-    {
-        /* pi is partitioning index, arr[p] is now
-           at right place */
-        int pivot = arr.at(high).Value;    // pivot
-        int i = (low - 1);  // Index of smaller element
 
-        for (int j = low; j <= high- 1; j++)
-        {
-            // If current element is smaller than or
-            // equal to pivot
-            if (arr.at(j).Value <= pivot)
-            {
-                i++;    // increment index of smaller element
-                collisionBoxValue t = arr.at(i);
-                arr.at(i) = arr.at(j);
-                arr.at(j) = t;
-                //swap(&arr[i], &arr[j]);
-            }
-        }
-        collisionBoxValue t =arr.at(i + 1);
-       arr.at(i + 1) = arr.at(high);
-       arr.at(high)= t;
-//        swap(&arr[i + 1], &arr[high]);
-        int pi = (i + 1);
-
-         //partition(arr, low, high);
-
-        // Separately sort elements before
-        // partition and after partition
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+int subdivide(std::vector<collisionBoxValue> &arr, int firstElemIndex,int lastElemIndex,int pivot){
+   {
+    collisionBoxValue t = arr.at(pivot);
+    arr.at(pivot) = arr.at(lastElemIndex);
+    arr.at(lastElemIndex) = t;
+    //swap pivot lastE
     }
+    int j = firstElemIndex;
+     std::cout<<"j : "<<j<<std::endl;
+    for(int i = firstElemIndex; i < lastElemIndex-1; i++){
+        if (arr.at(i).Value <= arr.at(lastElemIndex).Value){
+            collisionBoxValue t = arr.at(i);
+            arr.at(i) = arr.at(j);
+            arr.at(j) = t;
+            //swap i j
+
+            std::cout<<"j : "<<j<<std::endl;
+            j++;
+
+            std::cout<<"j : "<<j<<std::endl;
+        }
+    }
+    collisionBoxValue t = arr.at(lastElemIndex);
+    arr.at(lastElemIndex) = arr.at(j);
+    arr.at(j) = t;
+    //swap lastE j
+    std::cout<<"Partition terminee: ";
+    for(unsigned int i = 0; i < arr.size(); i++){
+        std::cout<<"A["<<i<<"]="<<arr.at(i).Value<<" , ";
+    }
+    std::cout<<"\n";
+    return j;
+}
+void quickSort(std::vector<collisionBoxValue> &arr, int firstElemIndex, int lastElemIndex)
+{
+    if (firstElemIndex < lastElemIndex){
+//        std::cout<<"Starting quicksort"<<std::endl;
+        int pivot = rand() % (lastElemIndex) + firstElemIndex;
+        if(pivot > (int) arr.size()-1) { pivot = arr.size()-1;}
+        pivot = subdivide(arr,firstElemIndex,lastElemIndex,pivot);
+        std::cout<<"Pivot : "<<pivot<<std::endl;
+        quickSort(arr, firstElemIndex, pivot - 1);
+        quickSort(arr, pivot + 1, lastElemIndex);
+
+        }
 }
 
 
 
 void PhysicsEngine::sortCollisionValues(){
-    quickSort(this->cBVx,cBVx.at(0).Value,this->cBVx.at(cBVx.size()-1).Value);
-    quickSort(this->cBVy,cBVy.at(0).Value,this->cBVy.at(cBVy.size()-1).Value);
-    quickSort(this->cBVz,cBVz.at(0).Value,this->cBVz.at(cBVz.size()-1).Value);
+    quickSort(this->cBVx,0,this->cBVx.size()-1);
+    quickSort(this->cBVy,0,this->cBVy.size()-1);
+    quickSort(this->cBVz,0,this->cBVz.size()-1);
 
 }
 
