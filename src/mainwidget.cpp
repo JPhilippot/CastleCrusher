@@ -330,7 +330,9 @@ void MainWidget::paintGL()
     // !!!! Testing collision, needs to be cleaned up !!!!
     //entity->detectCollision();
     pEngine->resolveCollisionsFromRoot(entity);
-    pEngine->printCollisionValues();
+    std::cout<<"*"<<std::endl;
+    //pEngine->printCollisionValues();
+    //pEngine->colideCheck();
     geometries->draw(&program);
     update();
 }

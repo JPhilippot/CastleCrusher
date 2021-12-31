@@ -21,6 +21,7 @@ SOURCES += ./src/main.cpp \
     ./src/plane.cpp\
     ./src/sphere.cpp \
     src/collider.cpp \
+    src/forces.cpp \
     src/physicsengine.cpp
 
 MODELS +=
@@ -36,6 +37,7 @@ HEADERS +=./src/entity.h \
      ./src/plane.h\
      ./src/sphere.h \
     src/collider.h \
+    src/forces.h \
     src/physicsengine.h
 
 

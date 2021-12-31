@@ -10,9 +10,15 @@
 #include <QVector3D>
 #include <QImage>
 #include <vector>
+#include <map>
 #include "vec.h"
 #include "mat.h"
 #include "physicsengine.h"
+
+enum ComponentType{
+    MESH,
+    COLLISION
+};
 
 
 class GeometryEngine;
@@ -67,6 +73,8 @@ public:
     Transformation getTransfo();
     std::string print();
     bool hasChild();
+
+    std::map<ComponentType,boolean> ComponentList;
 
 private:
     const bool isScene;

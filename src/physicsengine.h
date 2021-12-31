@@ -2,6 +2,7 @@
 #define PHYSICSENGINE_H
 #include "entity.h"
 #include <vector>
+#include <algorithm>
 class Entity;
 struct collisionBoxValue{
     Entity* entity;
@@ -20,6 +21,7 @@ public:
     void resolveCollisionsFromRoot(Entity* root);
     void printCollisionValues();
     void clearCollisionValues();
+    std::vector<std::vector<int>> colideCheck();
 
 private:
     void sortCollisionValues();
@@ -27,6 +29,7 @@ private:
     std::vector<collisionBoxValue> cBVx;
     std::vector<collisionBoxValue> cBVy;
     std::vector<collisionBoxValue> cBVz;
+
 };
 
 
