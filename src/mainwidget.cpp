@@ -270,7 +270,7 @@ void MainWidget::resizeGL(int w, int h)
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
     // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
-    const qreal zNear = 0.05, zFar = 7.0, fov = 45.0;
+    const qreal zNear = 0.05, zFar = 20, fov = 60.0;
 
     // Reset projection
     projection.setToIdentity();
@@ -291,9 +291,9 @@ void MainWidget::paintGL()
 
 
     if(!isCamInit){
-        translation = QVector3D(0.0, 0.0, -5);
+        translation = QVector3D(0.0, 0.0, 0.0);
         target = objectPosition;
-        cameraPosition = QVector3D(0.0,0.0, -10.0);
+        cameraPosition = QVector3D(0.0,0.0, -5.0);
         //si je prévois des translations de l'objet, il faudra que j'init sa pos ici
         isCamInit = true;
     }
@@ -302,7 +302,7 @@ void MainWidget::paintGL()
 
     modelMatrix.setToIdentity();viewMatrix.setToIdentity();
 
-    objectPosition = QVector3D(0.0, 0.0, -5);
+    objectPosition = QVector3D(0.0, 0.0,0.0);
     modelMatrix.translate(objectPosition);
     modelMatrix.rotate(oRotation);
     QVector3D cameraUp = QVector3D(0.0,1.0,0.0);
@@ -329,7 +329,7 @@ void MainWidget::paintGL()
     entity->renderScene(Transformation(),geometries,pEngine);
     // !!!! Testing collision, needs to be cleaned up !!!!
     //entity->detectCollision();
-    pEngine->resolveCollisionsFromRoot(entity);
+    pEngine->resolveCollisionsFromRoot();
     std::cout<<"*"<<std::endl;
     //pEngine->printCollisionValues();
     //pEngine->colideCheck();

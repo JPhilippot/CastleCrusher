@@ -48,11 +48,13 @@ Entity::Entity(Entity* parent ,QString name,bool isAScene) : id(++entityCpt), is
 
 }
 Entity::Entity(QString name,bool isAScene) : id(++entityCpt), isScene(isAScene)
-{
+{ // this constructor is solely used for making a new scene , any other entity must have a parent (at least a scene root)
     this->parent = nullptr;
     this->children= std::vector<Entity*>();
 //    this->mesh = Mesh();
     this->name =name;
+    this->transfo = Transformation();
+    this->rpf = vec3();
 
     std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
 
@@ -214,7 +216,9 @@ Model* Entity::getModel(){
 std::vector<Entity*> Entity::getChildren(){
     return children;
 }
-
+bool Entity::isAScene(){
+    return this->isScene;
+}
 void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine, PhysicsEngine* p){//, std::vector<std::vector<vec3>>* totVerts, std::vector<std::vector<unsigned int>>* totIdx){ //
     //std::cout<<"cc je suis rendered"<<std::endl;
 //    totVerts->push_back(std::vector<vec3>(model.render(parentTrans.compose(transfo))));
@@ -224,7 +228,8 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine, 
 
     transfo=Transformation(Transformation::rotationMatrix(this->rpf)).compose(transfo);
     if(p != nullptr){
-        p->collectCollisionValue(this,this->model->getCollisonArea(0,this->transfo));
+        if(!this->isScene && this->model !=nullptr)
+            p->collectCollisionValue(this,this->model->getCollisonArea(0,this->transfo));
     }
 
 //    Transformation::rotationMat(vec3(0.0,0.0,3.14/400))
@@ -233,10 +238,10 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine, 
         (child)->renderScene(transfo.compose(parentTrans),geoEngine,p);//,totVerts,totIdx);
     }
 
-
-    geoEngine->pushInVertBuff(model->render(parentTrans.compose(transfo)));
-    geoEngine->pushInIdxBuff(model->ids);
-
+    if(this->model != nullptr){
+        geoEngine->pushInVertBuff(model->render(parentTrans.compose(transfo)));
+        geoEngine->pushInIdxBuff(model->ids);
+    }
 }
 
 //void Entity::draw(GeometryEngine& geoE,QOpenGLShaderProgram* program, quintptr sizeYetArr, quintptr sizeYetInd){

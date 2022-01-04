@@ -36,7 +36,7 @@ class Entity
 public:
 //    Entity(bool isAScene = false);
 //    Entity(Entity* parent,bool isAScene = false);
-    Entity(QString name,bool isAScene = false);
+    Entity(QString name,bool isAScene = true);
     Entity(Entity* parent ,QString name,bool isAScene = false);
     Entity(QString name, Model* model, Transformation transfo, bool isAScene = false);
     Entity(QString name, Model* model, Transformation transfo, vec3 myrpf,Collider * col = nullptr,bool isAScene = false);
@@ -73,7 +73,7 @@ public:
     Transformation getTransfo();
     std::string print();
     bool hasChild();
-
+    bool isAScene();
     std::map<ComponentType,boolean> ComponentList;
 
 private:
@@ -84,7 +84,7 @@ private:
     Entity* parent;
     std::vector<Entity*> children;
     Transformation transfo;
-    Model* model;
+    Model* model = nullptr;
     Collider* collider = nullptr;
     std::vector<vec3> renderModel(Transformation parentTrans);
 

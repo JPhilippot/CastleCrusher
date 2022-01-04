@@ -18,7 +18,7 @@ public:
     PhysicsEngine();
     void collectCollisionValuesFromRoot(Entity* root);
     void collectCollisionValue(Entity *e,std::vector<float> collisionValues);
-    void resolveCollisionsFromRoot(Entity* root);
+    void resolveCollisionsFromRoot();
     void printCollisionValues();
     void clearCollisionValues();
     std::vector<std::vector<int>> colideCheck();

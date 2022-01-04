@@ -251,7 +251,7 @@ std::vector<std::vector<int>> PhysicsEngine::colideCheck(){
 
 
 
-void PhysicsEngine::resolveCollisionsFromRoot(Entity* root){    // pk root en param ?
+void PhysicsEngine::resolveCollisionsFromRoot(){    // pk root en param ?
     sortCollisionValues();
     //std::cout<<"je suis dans resolve\n";
     colideCheck();
@@ -283,6 +283,7 @@ void PhysicsEngine::resolveCollisionsFromRoot(Entity* root){    // pk root en pa
 //    }
 
 void PhysicsEngine::collectCollisionValue(Entity* e,std::vector<float> collisionValues){
+
     collisionBoxValue tmpXS = {e,collisionValues.at(0),true};
     collisionBoxValue tmpXE = {e,collisionValues.at(1),false};
 
