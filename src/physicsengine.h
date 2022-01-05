@@ -1,6 +1,7 @@
 #ifndef PHYSICSENGINE_H
 #define PHYSICSENGINE_H
 #include "entity.h"
+#include "forces.h"
 #include <vector>
 #include <algorithm>
 class Entity;
@@ -22,6 +23,10 @@ public:
     void printCollisionValues();
     void clearCollisionValues();
     std::vector<std::vector<int>> colideCheck();
+
+    void applyForces(Entity *e);
+
+    vec3 gravity = vec3(0.0,-9.1,0.0);
 
 private:
     void sortCollisionValues();

@@ -61,38 +61,10 @@
 #include "cube.h"
 #include "collider.h"
 #include "physicsengine.h"
+#include "plane.h"
 #endif
 
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
-
-//    Model test = Model(Model::CUBE,1.0f);
-//    for (int i=0;i<test.vertex.size();i++){
-//        std::cout<<test.vertex[i].x<<test.vertex[i].y<<test.vertex[i].z<<std::endl;
-//    }
-//    Transformation trans = Transformation(vec3(1.0f,1.0f,1.0f),mat3(),vec3(1.0f,1.0f,1.0f));
-//    std::vector<vec3> postTrans=test.render(trans);
-//    for (int i=0;i<postTrans.size();i++){
-//        std::cout<<postTrans[i].x<<postTrans[i].y<<postTrans[i].z<<std::endl;
-//        std::cout<<trans.apply(test.vertex[i]).x<<trans.apply(test.vertex[i]).y<<trans.apply(test.vertex[i]).z<<std::endl;
-//    }
-
-//    vec3 a=vec3(1.0,1.0,1.0);
-//    vec3 b = vec3(0.0,0.0,0.0);
-//    vec3 c = vec3(-1.0,0.0,1.0);
-
-//    std::cout<<a.x<<a.y<<a.z<<std::endl;
-//    std::cout<<(a+c).x<<(a+c).y<<(a+c).z<<std::endl;
-
-    PhysicsEngine* p = new PhysicsEngine();
-    Entity* e = new Entity(QString("Scene1"),true);
-
-//    Entity* enfant = new Entity(e,QString("model1"),Model(Model::CUBE,0.3f),
-//                          Transformation(),false);
-//    Entity* enfant2 = new Entity(e,QString("model2"),Model(Model::CUBE,0.6f),
-//                          Transformation(),false);
-
+void loadCastlePreset1(Entity* e){
     Entity* cubeTower1 = new Entity(e,QString("cubeTower1"),new Cube(1.0f),
                           Transformation(vec3(0.0f,0.0f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
     Entity* cubeTower2 = new Entity(e,QString("cubeTower2"),new Cube(1.0f),
@@ -100,12 +72,58 @@ int main(int argc, char *argv[])
     Entity* cubeTower3 = new Entity(e,QString("cubeTower3"),new Cube(1.0f),
                           Transformation(vec3(-2.005f,0.0f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
     Entity* cubeTower4 = new Entity(e,QString("cubeTower4"),new Cube(1.0f),
-                          Transformation(vec3(1.00f,2.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
+                          Transformation(vec3(1.005f,2.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
+    Entity* cubeTower5 = new Entity(e,QString("cubeTower5"),new Cube(1.0f),
+                          Transformation(vec3(-1.005f,2.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
+    Entity* cubeTower6 = new Entity(e,QString("cubeTower6"),new Cube(1.0f),
+                          Transformation(vec3(0.00f,4.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
     //
     e->addChild(cubeTower1);
-    e->addChild(cubeTower2);
-    e->addChild(cubeTower3);
-    e->addChild(cubeTower4);
+    cubeTower1->ComponentList[FALLS] = false;
+    cubeTower1->ComponentList[MESH] = true;
+    cubeTower1->ComponentList[COLLISION] = true;
+//    e->addChild(cubeTower2);
+//    e->addChild(cubeTower3);
+//    e->addChild(cubeTower4);
+//    e->addChild(cubeTower5);
+    e->addChild(cubeTower6);
+    cubeTower6->ComponentList[FALLS] = true;
+    cubeTower6->ComponentList[MESH] = true;
+    cubeTower6->ComponentList[COLLISION] = true;
+    //   []
+    //  [][]
+    // [][][]
+    //add gravity
+
+//    cubeTower2->forces.push_back(Forces(0.0,-0.1,0.0));
+//    cubeTower3->forces.push_back(Forces(0.0,-0.1,0.0));
+//    cubeTower4->forces.push_back(Forces(0.0,-0.1,0.0));
+//    cubeTower5->forces.push_back(Forces(0.0,-0.1,0.0));
+    cubeTower1->forces.push_back(Forces(0.0,-9.1,0.0));
+    cubeTower6->forces.push_back(Forces(0.0,-9.1,0.0));
+    cubeTower6->forces.push_back(Forces(300.0,0.0,0.0));
+
+
+}
+
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+
+    PhysicsEngine* p = new PhysicsEngine();
+    Entity* e = new Entity(QString("Scene1"),true);
+
+    Entity* ground = new Entity(e,QString("ground"),new Cube(5.0f),
+                          Transformation(vec3(0.0f,0.0f,0.0f),vec3(0.0,0.0,0.0),vec3(0.0f,0.0f,0.0f)),vec3(0.0,0.0,0.0),nullptr,false);
+
+    ground->ComponentList[FALLS] = false;
+    ground->ComponentList[MESH] = true;
+    ground->ComponentList[COLLISION] = true;
+    e->addChild(ground);
+    loadCastlePreset1(e);
+
+
+
 
     std::cout<<"Enfants? "<<(int)(e->getChildren().size())<<std::endl;
     std::cout<<"cc bg \n";

@@ -14,10 +14,12 @@
 #include "vec.h"
 #include "mat.h"
 #include "physicsengine.h"
+#include "forces.h"
 
 enum ComponentType{
     MESH,
-    COLLISION
+    COLLISION,
+    FALLS
 };
 
 
@@ -63,6 +65,8 @@ public:
     int getID();
 
     vec3 rpf;
+    vec3 oldVelocity = vec3(0.0,0.0,0.0);
+    float mass = 1.0;
 
     bool hasCollider();
     void renderScene(Transformation parentTrans, GeometryEngine* geoEngine,PhysicsEngine* p = nullptr);//, std::vector<std::vector<vec3>>* totVerts, std::vector<std::vector<unsigned int>>* totIdx); //
@@ -74,9 +78,12 @@ public:
     std::string print();
     bool hasChild();
     bool isAScene();
-    std::map<ComponentType,boolean> ComponentList;
 
-private:
+    std::map<ComponentType,bool> ComponentList;
+    std::vector<Forces> forces;
+
+
+//private:
     const bool isScene;
     QString name;
     static int entityCpt;

@@ -299,3 +299,32 @@ void PhysicsEngine::collectCollisionValue(Entity* e,std::vector<float> collision
     this->cBVz.push_back(tmpZS);
     this->cBVz.push_back(tmpZE);
 }
+
+
+
+
+
+
+void PhysicsEngine::applyForces(Entity *e){
+
+    vec3 acc = vec3(0.0,0.0,0.0);
+    for (int i=0;i<e->forces.size();i++){
+        acc+=((1.0/e->mass)* e->forces[i].F);
+    }
+    e->forces.clear();
+    if (e->ComponentList[FALLS]){
+
+        e->forces.push_back(gravity);
+    }
+
+    vec3 displacement=0.99*e->oldVelocity+(1.0/60.0)*acc;
+    e->transfo = e->transfo.compose(Transformation((1.0/60.0)*e->oldVelocity, mat4(), vec3(1.0,1.0,1.0)));
+    e->oldVelocity=vec3(displacement);
+}
+
+
+
+
+
+
+
