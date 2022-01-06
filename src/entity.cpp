@@ -46,6 +46,7 @@ Entity::Entity(Entity* parent ,QString name,bool isAScene) : id(++entityCpt), is
     std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
 
 
+
 }
 Entity::Entity(QString name,bool isAScene) : id(++entityCpt), isScene(isAScene)
 { // this constructor is solely used for making a new scene , any other entity must have a parent (at least a scene root)
@@ -55,6 +56,10 @@ Entity::Entity(QString name,bool isAScene) : id(++entityCpt), isScene(isAScene)
     this->name =name;
     this->transfo = Transformation();
     this->rpf = vec3();
+    this->ComponentList[FALLS] = false;
+    this->ComponentList[MESH] = false;
+    this->ComponentList[COLLISION] = false;
+    this->ComponentList[TEXTURE] = false;
 
     std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
 
@@ -65,6 +70,10 @@ Entity::Entity(QString name, Model* model, Transformation transfo, bool isAScene
     this->children=std::vector<Entity*>();
     this->transfo=transfo;
     this->model=model;
+    this->ComponentList[FALLS] = false;
+    this->ComponentList[MESH] = false;
+    this->ComponentList[COLLISION] = false;
+    this->ComponentList[TEXTURE] = false;
 
     std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
 
@@ -77,6 +86,10 @@ Entity::Entity(QString name, Model* model, Transformation transfo, vec3 myrpf,Co
     this->model=model;
     rpf=myrpf;
     this->collider = col;
+    this->ComponentList[FALLS] = false;
+    this->ComponentList[MESH] = false;
+    this->ComponentList[COLLISION] = false;
+    this->ComponentList[TEXTURE] = false;
 
     std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
 
@@ -89,6 +102,10 @@ Entity::Entity(Entity* parent, QString name, Model* model, Transformation transf
     this->children=std::vector<Entity*>();
     this->transfo=transfo;
     this->model=model;
+    this->ComponentList[FALLS] = false;
+    this->ComponentList[MESH] = false;
+    this->ComponentList[COLLISION] = false;
+    this->ComponentList[TEXTURE] = false;
 
     std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
 }
@@ -101,6 +118,10 @@ Entity::Entity(Entity* parent, QString name, Model* model, Transformation transf
     this->transfo=transfo;
     this->model=model;
     rpf=myrpf;
+    this->ComponentList[FALLS] = false;
+    this->ComponentList[MESH] = false;
+    this->ComponentList[COLLISION] = false;
+    this->ComponentList[TEXTURE] = false;
     std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
 }
 
@@ -114,6 +135,10 @@ Entity::Entity(Entity* parent, QString name, Model* model, Transformation transf
     this->model=model;
     rpf=myrpf;
     this->collider = col;
+    this->ComponentList[FALLS] = false;
+    this->ComponentList[MESH] = false;
+    this->ComponentList[COLLISION] = false;
+    this->ComponentList[TEXTURE] = false;
     std::cout<<"Entity created : "<<this->name.toStdString() << " | id :"<< this->id <<std::endl;
 }
 
@@ -231,8 +256,14 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine, 
 
     transfo=Transformation(Transformation::rotationMatrix(this->rpf)).compose(transfo);
     if(p != nullptr){
-        if(!this->isScene && this->model !=nullptr)
+        if(!this->isScene && this->ComponentList[MESH]){
+//            std::vector<float> area = this->model->getCollisonArea(0,this->transfo);
+//            for (int i=0;i<area.size();i++){
+//                std::cout<<area[i]<<" ";
+//            }
+//            std::cout<<std::endl;
             p->collectCollisionValue(this,this->model->getCollisonArea(0,this->transfo));
+        }
     }
 
 //    Transformation::rotationMat(vec3(0.0,0.0,3.14/400))
@@ -241,7 +272,7 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine, 
         (child)->renderScene(transfo.compose(parentTrans),geoEngine,p);//,totVerts,totIdx);
     }
 
-    if(this->model != nullptr){
+    if(this->ComponentList[MESH]){
         geoEngine->pushInVertBuff(model->render(parentTrans.compose(transfo)));
         geoEngine->pushInIdxBuff(model->ids);
     }
@@ -284,6 +315,6 @@ bool Entity::hasChild(){
 }
 
 void Entity::setTexture(QString texturePath){
-    this->texture = QImage(texturePath);
+    this->texture.load(texturePath);
     this->ComponentList[TEXTURE] = true;
 }

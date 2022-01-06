@@ -45,12 +45,12 @@ std::vector<float> Plane::getAABB(Transformation t){
         minY= (minY>temp.y? temp.y:minY);
         minZ= (minZ>temp.z? temp.z:minZ);
     }
-   collisionArea.push_back(minX);
-   collisionArea.push_back(maxX);
-   collisionArea.push_back(minY);
-   collisionArea.push_back(maxY);
-   collisionArea.push_back(minZ);
-   collisionArea.push_back(maxZ);
+   collisionArea.push_back(minX-0.001);
+   collisionArea.push_back(maxX+0.001);
+   collisionArea.push_back(minY-0.001);
+   collisionArea.push_back(maxY+0.001);
+   collisionArea.push_back(minZ-0.001);
+   collisionArea.push_back(maxZ+0.001);
 
 
 

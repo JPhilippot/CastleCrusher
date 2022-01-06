@@ -85,7 +85,7 @@ public:
     void setTexture(QString texturePath);
 
 //private:
-    QImage texture;
+    QImage texture = QImage();
     const bool isScene;
     QString name;
     static int entityCpt;

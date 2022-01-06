@@ -262,13 +262,27 @@ void PhysicsEngine::resolveCollisionsFromRoot(Entity* root){    // pk root en pa
 
         }
         else{
-            if (!child1->ComponentList[FALLS]){
-
-            }
             Forces force1 ; force1.addForces(child1->forces); //force1.F*=(-1.0);
             Forces force2 ; force2.addForces(child2->forces); //force2.F*=(-1.0);
-            child1->forces.push_back(force2);
-            child2->forces.push_back(force1);
+            if (!child1->ComponentList[FALLS] && !child2->ComponentList[FALLS]){
+
+            }
+            else if (!child1->ComponentList[FALLS]){
+                force2.F*=(-2.0);
+                child2->forces.push_back(force2);
+                child2->oldVelocity=vec3(0.0,0.0,0.0);
+            }
+            else if(!child2->ComponentList[FALLS]){
+                force1.F*=(-2.0);
+                child1->forces.push_back(force1);
+                child1->oldVelocity=vec3(0.0,0.0,0.0);
+            }
+            else{
+                child1->forces.push_back(force2);
+                child2->forces.push_back(force1);
+            }
+
+
         }
     }
 
