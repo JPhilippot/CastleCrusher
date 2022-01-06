@@ -66,30 +66,43 @@
 
 void loadCastlePreset1(Entity* e){
     Entity* cubeTower1 = new Entity(e,QString("cubeTower1"),new Cube(1.0f),
-                          Transformation(vec3(0.0f,0.0f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
+                          Transformation(vec3(0.0f,1.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
     Entity* cubeTower2 = new Entity(e,QString("cubeTower2"),new Cube(1.0f),
-                          Transformation(vec3(2.005f,0.0f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
+                          Transformation(vec3(2.005f,1.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
     Entity* cubeTower3 = new Entity(e,QString("cubeTower3"),new Cube(1.0f),
-                          Transformation(vec3(-2.005f,0.0f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
+                          Transformation(vec3(-2.005f,1.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
     Entity* cubeTower4 = new Entity(e,QString("cubeTower4"),new Cube(1.0f),
-                          Transformation(vec3(1.005f,2.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
+                          Transformation(vec3(1.005f,3.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
     Entity* cubeTower5 = new Entity(e,QString("cubeTower5"),new Cube(1.0f),
-                          Transformation(vec3(-1.005f,2.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
+                          Transformation(vec3(-1.005f,3.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
     Entity* cubeTower6 = new Entity(e,QString("cubeTower6"),new Cube(1.0f),
-                          Transformation(vec3(0.00f,4.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
+                          Transformation(vec3(0.00f,5.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
     //
     e->addChild(cubeTower1);
     cubeTower1->ComponentList[FALLS] = false;
     cubeTower1->ComponentList[MESH] = true;
     cubeTower1->ComponentList[COLLISION] = true;
-//    e->addChild(cubeTower2);
-//    e->addChild(cubeTower3);
-//    e->addChild(cubeTower4);
-//    e->addChild(cubeTower5);
+    e->addChild(cubeTower2);
+    e->addChild(cubeTower3);
+    e->addChild(cubeTower4);
+    e->addChild(cubeTower5);
     e->addChild(cubeTower6);
-    cubeTower6->ComponentList[FALLS] = true;
+    cubeTower6->ComponentList[FALLS] = false;
     cubeTower6->ComponentList[MESH] = true;
     cubeTower6->ComponentList[COLLISION] = true;
+    cubeTower5->ComponentList[FALLS] = false;
+    cubeTower5->ComponentList[MESH] = true;
+    cubeTower5->ComponentList[COLLISION] = true;
+    cubeTower4->ComponentList[FALLS] = false;
+    cubeTower4->ComponentList[MESH] = true;
+    cubeTower4->ComponentList[COLLISION] = true;
+    cubeTower3->ComponentList[FALLS] = false;
+    cubeTower3->ComponentList[MESH] = true;
+    cubeTower3->ComponentList[COLLISION] = true;
+    cubeTower2->ComponentList[FALLS] = false;
+    cubeTower2->ComponentList[MESH] = true;
+    cubeTower2->ComponentList[COLLISION] = true;
+
     //   []
     //  [][]
     // [][][]
@@ -99,9 +112,14 @@ void loadCastlePreset1(Entity* e){
 //    cubeTower3->forces.push_back(Forces(0.0,-0.1,0.0));
 //    cubeTower4->forces.push_back(Forces(0.0,-0.1,0.0));
 //    cubeTower5->forces.push_back(Forces(0.0,-0.1,0.0));
-    cubeTower1->forces.push_back(Forces(0.0,-9.1,0.0));
-    cubeTower6->forces.push_back(Forces(0.0,-9.1,0.0));
-    cubeTower6->forces.push_back(Forces(300.0,0.0,0.0));
+    cubeTower1->forces.push_back(Forces(0.0,0.0,0.0));
+
+//    cubeTower6->forces.push_back(Forces(0.0,-9.1,0.0));
+//    cubeTower6->forces.push_back(Forces(00.0,800.0,0.0));
+
+//    cubeTower6->forces.push_back(Forces(0.0,0.0,0.0));
+//    cubeTower6->forces.push_back(Forces(500.0,0.0,0.0));
+
 
 
 }
@@ -113,14 +131,15 @@ int main(int argc, char *argv[])
     PhysicsEngine* p = new PhysicsEngine();
     Entity* e = new Entity(QString("Scene1"),true);
 
-    Entity* ground = new Entity(e,QString("ground"),new Cube(5.0f),
-                          Transformation(vec3(0.0f,0.0f,0.0f),vec3(0.0,0.0,0.0),vec3(0.0f,0.0f,0.0f)),vec3(0.0,0.0,0.0),nullptr,false);
+    Entity* ground = new Entity(e,QString("ground"),new Plane(5.0f),
+                          Transformation(vec3(0.0f,0.0f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
 
     ground->ComponentList[FALLS] = false;
     ground->ComponentList[MESH] = true;
     ground->ComponentList[COLLISION] = true;
-    e->addChild(ground);
+
     loadCastlePreset1(e);
+    e->addChild(ground);
 
 
 

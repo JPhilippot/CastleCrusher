@@ -5,39 +5,27 @@ Plane::Plane()
     this->vertex=std::vector<vec3>();
 
 
-    this->vertex.push_back(vec3(-1.0,-1.0,0.0));
-    this->vertex.push_back(vec3(1.0,-1.0,0.0));
-    this->vertex.push_back(vec3(1.0,1.0,0.0));
-    this->vertex.push_back(vec3(-1.0,1.0,0.0));
+    this->vertex.push_back(vec3(-1.0,0.0,-1.0));
+    this->vertex.push_back(vec3(1.0,0.0,-1.0));
+    this->vertex.push_back(vec3(1.0,0.0,1.0));
+    this->vertex.push_back(vec3(-1.0,0.0,1.0));
 
 
 
-    this->ids={0,1,2,1,2,3};
+    this->ids={0,1,2,3,0,2};
+
 
 }
 Plane::Plane(float size){
     this->vertex=std::vector<vec3>();
 
 
-    this->vertex.push_back(vec3(-size,-size,0.0));
-    this->vertex.push_back(vec3(size,-size,0.0));
-    this->vertex.push_back(vec3(size,size,0.0));
-    this->vertex.push_back(vec3(-size,size,0.0));
+    this->vertex.push_back(vec3(-size,0.0,-size));
+    this->vertex.push_back(vec3(size,0.0,-size));
+    this->vertex.push_back(vec3(size,0.0,size));
+    this->vertex.push_back(vec3(-size,0.0,size));
 
-    this->ids={0,1,2,1,2,3};
-
-}
-
-Plane::Plane(float sizeX,float sizeZ){
-    this->vertex=std::vector<vec3>();
-
-
-    this->vertex.push_back(vec3(-sizeX,0.0,-sizeZ));
-    this->vertex.push_back(vec3(sizeX,0.0,-sizeZ));
-    this->vertex.push_back(vec3(sizeX,0.0,sizeZ));
-    this->vertex.push_back(vec3(-sizeX,0.0,sizeZ));
-
-    ids={0,1,2,1,2,3};
+    this->ids={0,1,2,3,0,2};
 
 }
 

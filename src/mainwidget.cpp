@@ -118,7 +118,7 @@ void MainWidget::timerEvent(QTimerEvent *)
         angularSpeed = 0.0;
     } else {
         // Update rotation
-        oRotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * oRotation;
+        cRotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * cRotation;
 
         // Request an update
         update();
@@ -203,7 +203,8 @@ void MainWidget::initializeGL()
     glEnable(GL_DEPTH_TEST);
 
 //! [2]
-    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+    glEnable(GL_LINE);
 
 
     geometries = new GeometryEngine(entity);
@@ -270,7 +271,7 @@ void MainWidget::resizeGL(int w, int h)
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
     // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
-    const qreal zNear = 0.05, zFar = 20, fov = 60.0;
+    const qreal zNear = 0.01, zFar = 200, fov = 60.0;
 
     // Reset projection
     projection.setToIdentity();
@@ -304,13 +305,13 @@ void MainWidget::paintGL()
 
     objectPosition = QVector3D(0.0, 0.0,0.0);
     modelMatrix.translate(objectPosition);
-    modelMatrix.rotate(oRotation);
     QVector3D cameraUp = QVector3D(0.0,1.0,0.0);
 
     if(orbitalCamera){
         target = objectPosition;
     }
     viewMatrix.lookAt(cameraPosition, target,cameraUp);
+    viewMatrix.rotate(cRotation);
 
     // Set modelview-projection oMatrix
     program.setUniformValue("mvp_matrix", projection * viewMatrix * modelMatrix  /** cMatrix*/);
@@ -326,19 +327,27 @@ void MainWidget::paintGL()
 
     //renderscene here -> add root to widget
     pEngine->clearCollisionValues();
+    entity->renderScene(Transformation(),geometries,pEngine);
+    //pEngine->resolveCollisionsFromRoot(entity);
     for (int i=0; i<entity->children.size();i++){
         pEngine->applyForces(entity->children[i]);
     }
 
 
-    entity->renderScene(Transformation(),geometries,pEngine);
+
 
     // !!!! Testing collision, needs to be cleaned up !!!!
     //entity->detectCollision();
+
+
+
+    //std::cout<<"*"<<std::endl;
+
    // pEngine->resolveCollisionsFromRoot();
     //std::cout<<"*"<<std::endl;
+
     //pEngine->printCollisionValues();
-    //pEngine->colideCheck();
+    //pEngine->collideCheck();
     geometries->draw(&program);
     update();
 }

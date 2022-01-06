@@ -111,7 +111,7 @@ private:
     QVector2D mousePressPosition;
     QVector3D rotationAxis;
     qreal angularSpeed;
-    QQuaternion oRotation;
+    QQuaternion cRotation;
     QVector3D translation;
     QVector3D cameraPosition;
     QVector3D objectPosition ;

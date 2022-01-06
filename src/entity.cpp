@@ -195,6 +195,9 @@ Entity*  Entity::getChildByID(int childID){
         if(this->children[i]->getID() == childID){
            return this->children[i];
         }
+        else if (this->children[i]->children.size()!=0){
+            return this->children[i]->getChildByID(childID);
+        }
     }
     std::cout<<"Child not found"<<std::endl;
     return nullptr;
@@ -278,4 +281,9 @@ bool Entity::hasCollider(){
 
 bool Entity::hasChild(){
  return this->children.empty();
+}
+
+void Entity::setTexture(QString texturePath){
+    this->texture = QImage(texturePath);
+    this->ComponentList[TEXTURE] = true;
 }

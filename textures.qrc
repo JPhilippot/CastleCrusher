@@ -8,5 +8,8 @@
         <file>ressources/snowrocks.png</file>
         <file>ressources/sphere.obj</file>
         <file>ressources/suzanne.obj</file>
+        <file>ressources/plywood_diff_1k.jpg</file>
+        <file>ressources/plywood_nor_gl_1k.jpg</file>
+        <file>ressources/plywood_rough_1k.jpg</file>
     </qresource>
 </RCC>

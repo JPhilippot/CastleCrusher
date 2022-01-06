@@ -19,10 +19,10 @@ public:
     PhysicsEngine();
     void collectCollisionValuesFromRoot(Entity* root);
     void collectCollisionValue(Entity *e,std::vector<float> collisionValues);
-    void resolveCollisionsFromRoot();
+    void resolveCollisionsFromRoot(Entity* root);
     void printCollisionValues();
     void clearCollisionValues();
-    std::vector<std::vector<int>> colideCheck();
+    std::vector<std::vector<int>> collideCheck();
 
     void applyForces(Entity *e);
 

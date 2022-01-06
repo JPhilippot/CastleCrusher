@@ -19,7 +19,8 @@
 enum ComponentType{
     MESH,
     COLLISION,
-    FALLS
+    FALLS,
+    TEXTURE
 };
 
 
@@ -81,9 +82,10 @@ public:
 
     std::map<ComponentType,bool> ComponentList;
     std::vector<Forces> forces;
-
+    void setTexture(QString texturePath);
 
 //private:
+    QImage texture;
     const bool isScene;
     QString name;
     static int entityCpt;

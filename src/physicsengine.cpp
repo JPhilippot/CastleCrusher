@@ -138,12 +138,12 @@ void PhysicsEngine::printCollisionValues(){
 }
 
 
-std::vector<std::vector<int>> PhysicsEngine::colideCheck(){
-    //std::cout<<"je suis dans colide check\n";
+std::vector<std::vector<int>> PhysicsEngine::collideCheck(){
+    //std::cout<<"je suis dans collide check\n";
 
     std::vector<std::vector<int>> res = std::vector<std::vector<int>>();
 
-    std::vector<std::vector<int>> couplesColideX = std::vector<std::vector<int>>();
+    std::vector<std::vector<int>> couplescollideX = std::vector<std::vector<int>>();
     std::vector<int> echeancier;
 
     for (int i=0; i<cBVx.size();i++){
@@ -159,15 +159,15 @@ std::vector<std::vector<int>> PhysicsEngine::colideCheck(){
 
         }
         if (echeancier.size()!=0 && echeancier[echeancier.size()-1]!=cBVx[i].entity->getID()){
-            couplesColideX.push_back({echeancier[echeancier.size()-1],cBVx[i].entity->getID()});
+            couplescollideX.push_back({echeancier[echeancier.size()-1],cBVx[i].entity->getID()});
         }
     }
 
-    if (couplesColideX.size()==0){return std::vector<std::vector<int>>();}
-    //repeat for every buffer ; check for empty couplesColide (in which case exit)
+    if (couplescollideX.size()==0){return std::vector<std::vector<int>>();}
+    //repeat for every buffer ; check for empty couplescollide (in which case exit)
 
     echeancier.clear();
-    std::vector<std::vector<int>> couplesColideY = std::vector<std::vector<int>>();
+    std::vector<std::vector<int>> couplescollideY = std::vector<std::vector<int>>();
 
     for (int i=0; i<cBVy.size();i++){
 
@@ -181,23 +181,23 @@ std::vector<std::vector<int>> PhysicsEngine::colideCheck(){
 
         }
         if (echeancier.size()!=0 && echeancier[echeancier.size()-1]!=cBVy[i].entity->getID()){
-            couplesColideY.push_back({echeancier[echeancier.size()-1],cBVy[i].entity->getID()});
+            couplescollideY.push_back({echeancier[echeancier.size()-1],cBVy[i].entity->getID()});
         }
     }
 
-    if (couplesColideY.size()==0){return std::vector<std::vector<int>>();}
+    if (couplescollideY.size()==0){return std::vector<std::vector<int>>();}
 
     //check for inclusion
     std::vector<std::vector<int>> couplesXY = std::vector<std::vector<int>>();
 
-    for (int i=0; i<couplesColideX.size();i++){
-        std::vector<int> other={couplesColideX[i][1],couplesColideX[i][0]};
+    for (int i=0; i<couplescollideX.size();i++){
+        std::vector<int> other={couplescollideX[i][1],couplescollideX[i][0]};
 
-        if (std::find(couplesColideY.begin(),couplesColideY.end(),couplesColideX[i])!=couplesColideY.end()
+        if (std::find(couplescollideY.begin(),couplescollideY.end(),couplescollideX[i])!=couplescollideY.end()
                 ||
-                std::find(couplesColideY.begin(),couplesColideY.end(),other)!=couplesColideY.end()){
+                std::find(couplescollideY.begin(),couplescollideY.end(),other)!=couplescollideY.end()){
 
-            couplesXY.push_back(std::vector<int>(couplesColideX[i]));
+            couplesXY.push_back(std::vector<int>(couplescollideX[i]));
 
         }
     }
@@ -208,7 +208,7 @@ std::vector<std::vector<int>> PhysicsEngine::colideCheck(){
     //HERE
 
     echeancier.clear();
-    std::vector<std::vector<int>> couplesColideZ = std::vector<std::vector<int>>();
+    std::vector<std::vector<int>> couplescollideZ = std::vector<std::vector<int>>();
 
     for (int i=0; i<cBVz.size();i++){
 
@@ -222,10 +222,10 @@ std::vector<std::vector<int>> PhysicsEngine::colideCheck(){
 
         }
         if (echeancier.size()!=0 && echeancier[echeancier.size()-1]!=cBVz[i].entity->getID()){
-            couplesColideZ.push_back({echeancier[echeancier.size()-1],cBVz[i].entity->getID()});
+            couplescollideZ.push_back({echeancier[echeancier.size()-1],cBVz[i].entity->getID()});
         }
     }
-    if (couplesColideZ.size()==0){return std::vector<std::vector<int>>();}
+    if (couplescollideZ.size()==0){return std::vector<std::vector<int>>();}
 
     //check for inclusion
 
@@ -233,9 +233,9 @@ std::vector<std::vector<int>> PhysicsEngine::colideCheck(){
 
         std::vector<int> other={couplesXY[i][1],couplesXY[i][0]};
 
-        if (std::find(couplesColideZ.begin(),couplesColideZ.end(),couplesXY[i])!=couplesColideZ.end()
+        if (std::find(couplescollideZ.begin(),couplescollideZ.end(),couplesXY[i])!=couplescollideZ.end()
                 ||
-                std::find(couplesColideZ.begin(),couplesColideZ.end(),other)!=couplesColideZ.end()){
+                std::find(couplescollideZ.begin(),couplescollideZ.end(),other)!=couplescollideZ.end()){
 
             res.push_back(std::vector<int>(couplesXY[i]));
             std::cout<<"COLLISION FOUND"<<std::endl;
@@ -251,10 +251,26 @@ std::vector<std::vector<int>> PhysicsEngine::colideCheck(){
 
 
 
-void PhysicsEngine::resolveCollisionsFromRoot(){    // pk root en param ?
+void PhysicsEngine::resolveCollisionsFromRoot(Entity* root){    // pk root en param ?
     sortCollisionValues();
     //std::cout<<"je suis dans resolve\n";
-    colideCheck();
+    std::vector<std::vector<int>> collidingObjs = collideCheck(); // -> [[id=1, id=3], [id=3, id=2], ...]
+    for (int couples = 0; couples<collidingObjs.size();couples++){
+        Entity* child1 = root->getChildByID(collidingObjs[couples][0]);
+        Entity* child2 = root->getChildByID(collidingObjs[couples][1]);
+        if (child1==nullptr || child2==nullptr){
+
+        }
+        else{
+            if (!child1->ComponentList[FALLS]){
+
+            }
+            Forces force1 ; force1.addForces(child1->forces); //force1.F*=(-1.0);
+            Forces force2 ; force2.addForces(child2->forces); //force2.F*=(-1.0);
+            child1->forces.push_back(force2);
+            child2->forces.push_back(force1);
+        }
+    }
 
 }
 
