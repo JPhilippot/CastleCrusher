@@ -262,7 +262,7 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine, 
 //                std::cout<<area[i]<<" ";
 //            }
 //            std::cout<<std::endl;
-            p->collectCollisionValue(this,this->model->getCollisonArea(0,this->transfo));
+            p->collectCollisionValue(this,this->model->getCollisonArea(0,transfo.compose(parentTrans)));
         }
     }
 
@@ -273,7 +273,8 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine, 
     }
 
     if(this->ComponentList[MESH]){
-        geoEngine->pushInVertBuff(model->render(parentTrans.compose(transfo)));
+        this->sumTrans=transfo.compose(parentTrans);
+        geoEngine->pushInVertBuff(model->render(transfo.compose(parentTrans)));
         geoEngine->pushInIdxBuff(model->ids);
     }
 }
@@ -286,11 +287,27 @@ void Entity::renderScene(Transformation parentTrans, GeometryEngine* geoEngine, 
 //}
 
 std::vector<vec3> Entity::renderModel(Transformation parentTrans){
-    return model->render(parentTrans.compose(transfo));
+    return model->render(transfo.compose(parentTrans));
 }
 
 Transformation Entity::getTransfo(){
     return this->transfo;
+}
+
+std::vector<vec3> Entity::getAxii(){
+    vec3 O = sumTrans.apply(vec3(0.0,0.0,0.0));
+    vec3 i = sumTrans.apply(vec3(1.0,0.0,0.0));
+    vec3 j = sumTrans.apply(vec3(0.0,1.0,0.0));
+    vec3 k = sumTrans.apply(vec3(0.0,0.0,1.0));
+
+    std::vector<vec3> res = std::vector<vec3>();
+//    res.push_back(normalize(i-O));
+//    res.push_back(normalize(j-O));
+//    res.push_back(normalize(k-O));
+    res.push_back((i-O));
+    res.push_back((j-O));
+    res.push_back((k-O));
+    return res;
 }
 
 void Entity::detectCollision(){
@@ -304,6 +321,25 @@ void Entity::detectCollision(){
             this->collider->collidesWith(*c);
         }
     }
+}
+
+Interval Entity::getInterval(vec3 axis){
+    std::vector<vec3> verti = model->render(sumTrans);
+    vec3 O = sumTrans.apply(vec3(0.0,0.0,0.0));
+    for (int i=0;i<verti.size();i++){
+        //verti[i] -=O;
+    }
+//    std::vector<vec3> A = this->getAxii();
+    Interval res;
+    res.min=res.max=dot(axis,verti[0]);
+    for (int i=1;i<verti.size();i++){
+        float proj = dot(axis,verti[i]);
+        res.min = (proj<res.min) ? proj : res.min;
+        res.max = (proj>res.max) ? proj : res.max;
+    }
+
+    return res;
+
 }
 
 bool Entity::hasCollider(){

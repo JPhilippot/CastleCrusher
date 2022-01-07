@@ -163,7 +163,6 @@ std::vector<std::vector<int>> PhysicsEngine::collideCheck(){
 
         else{
             std::vector<int>::iterator collide = (std::vector<int>::iterator)std::find(echeancier.begin(),echeancier.end(),cBVx[i].entity->getID());
-            std::cout<<"X : "<<*collide<<std::endl;
             collide++;
             while (collide != echeancier.end()){
                 couplescollideX.push_back({*collide,cBVx[i].entity->getID()});
@@ -199,7 +198,6 @@ std::vector<std::vector<int>> PhysicsEngine::collideCheck(){
         else{
 
             std::vector<int>::iterator collide = (std::vector<int>::iterator)std::find(echeancier.begin(),echeancier.end(),cBVy[i].entity->getID());
-            std::cout<<"Y : "<<*collide<<std::endl;
             collide++;
             while (collide != echeancier.end()){
                 couplescollideY.push_back({*collide,cBVy[i].entity->getID()});
@@ -256,7 +254,6 @@ std::vector<std::vector<int>> PhysicsEngine::collideCheck(){
         else{
 
             std::vector<int>::iterator collide = (std::vector<int>::iterator)std::find(echeancier.begin(),echeancier.end(),cBVz[i].entity->getID());
-            std::cout<<"Z : "<<*collide<<std::endl;
             if (collide!=echeancier.end()){
             collide++;
             while (collide != echeancier.end()){
@@ -298,51 +295,130 @@ std::vector<std::vector<int>> PhysicsEngine::collideCheck(){
 }
 
 
+std::vector<std::vector<int>> PhysicsEngine::removeDuplicates(std::vector<std::vector<int>> objs){
+    std::vector<std::vector<int>> res = std::vector<std::vector<int>>();
+
+    for (int i=0;i<objs.size();i++){
+        std::vector<int> other = {objs[i][1],objs[i][0]};
+        if ((std::find(res.begin(),res.end(),objs[i])!=res.end()
+             ||
+             std::find(res.begin(),res.end(),other)!=res.end())){
+
+
+        }
+        else{
+            res.push_back(objs[i]);
+        }
+    }
+    return res;
+}
+
+std::vector<std::vector<int>> PhysicsEngine::narrowPhase(std::vector<std::vector<Entity*>> collidingEntities){
+    std::vector<std::vector<int>> res = std::vector<std::vector<int>>();
+    for (int i=0; i<collidingEntities.size();i++){
+       // std::cout<<std::endl<<std::endl;
+        bool flag = true;
+        Entity* e1 = collidingEntities[i][0];
+        Entity* e2 = collidingEntities[i][1];
+        //if (e1->model->myShape==CUBE && e2->model->myShape==CUBE){
+            std::vector<vec3> o1 = e1->getAxii();
+            std::vector<vec3> o2 = e2->getAxii();
+
+            vec3 test[15] = {
+                o1[0], o1[1], o1[2],
+                o2[0], o2[1], o2[2]
+            };
+            for (int i=0; i<3; ++i){
+                test[6+i*3+0]=vec3(cross(test[i],test[0]));
+                test[6+i*3+1]=vec3(cross(test[i],test[1]));
+                test[6+i*3+2]=vec3(cross(test[i],test[2]));
+            }
+
+            for (int i=0; i<15;i++){
+                if (flag){
+                Interval a= e1->getInterval(test[i]);
+
+                Interval b= e2->getInterval(test[i]);
+
+                flag = ((b.min <= a.max) && (a.min <= b.max));
+//                std::cout<<"a : "<<a.min<<" ,"<<a.max<<" b : "<<b.min<<" ,"<<b.max<<" with "<<test[i].x<<" "<<test[i].y<<" "<<test[i].z<<"   --> "<<flag<<"\n";
+//                if (!(b.min <= a.max) && (a.min <= b.max)){
+//                    flag = false;
+//                    std::cout<<"FLAG : "<<flag<<std::endl;
+
+//                }
+                }
+            }
+            if (flag){
+                res.push_back({e1->id,e2->id});
+            }
+
+        //}
+    }
+    return res;
+}
+
 
 void PhysicsEngine::resolveCollisionsFromRoot(Entity* root){    // pk root en param ?
     sortCollisionValues();
     //std::cout<<"je suis dans resolve\n";
-    std::vector<std::vector<int>> collidingObjs = collideCheck(); // -> [[id=1, id=3], [id=3, id=2], ...]
-    /**
-    narrow phase :
-    foreach collision,
+    std::vector<std::vector<int>> oldCollidingObjs = collideCheck(); // -> [[id=1, id=3], [id=3, id=2], ...]
 
-    **/
+    //remove duplicates if any collision is found
 
-    //forces application
-    for (int couples = 0; couples<collidingObjs.size();couples++){
-        Entity* child1 = root->getChildByID(collidingObjs[couples][0]);
-        Entity* child2 = root->getChildByID(collidingObjs[couples][1]);
-        if (child1==nullptr || child2==nullptr){
+    if (oldCollidingObjs.size()!=0){
+        std::vector<std::vector<int>> broadCollidingObjs = removeDuplicates(oldCollidingObjs);
 
+        /**
+        //narrow phase :
+        foreach collision,
+
+        **/
+        std::vector<std::vector<Entity*>> entities = std::vector<std::vector<Entity*>>();
+        for (int i=0; i<broadCollidingObjs.size();i++){
+            entities.push_back({root->getChildByID(broadCollidingObjs[i][0]),root->getChildByID(broadCollidingObjs[i][1])});
         }
-        else{
-            Forces force1 ; force1.addForces(child1->forces); //force1.F*=(-1.0);
-            Forces force2 ; force2.addForces(child2->forces); //force2.F*=(-1.0);
-            if (!child1->ComponentList[FALLS] && !child2->ComponentList[FALLS]){
 
-            }
-            else if (!child1->ComponentList[FALLS]){
-                force2.F*=(-2.0);
-                //child2->forces.clear();
-                child2->forces.push_back(force2);
-                child2->oldVelocity=vec3(0.0,0.0,0.0);
-            }
-            else if(!child2->ComponentList[FALLS]){
-                force1.F*=(-2.0);
-                //child1->forces.clear();
-                child1->forces.push_back(force1);
 
-                child1->oldVelocity=vec3(0.0,0.0,0.0);
+        std::vector<std::vector<int>> collidingObjs = narrowPhase(entities);
+
+        //forces application
+        for (int couples = 0; couples<collidingObjs.size();couples++){
+            Entity* child1 = root->getChildByID(collidingObjs[couples][0]);
+            Entity* child2 = root->getChildByID(collidingObjs[couples][1]);
+            if (child1==nullptr || child2==nullptr){
+
             }
             else{
-                force1.F*=(-2.0);
-                force2.F*=(-2.0);
-                child1->forces.push_back(force2);
-                child2->forces.push_back(force1);
+                Forces force1 ; force1.addForces(child1->forces); //force1.F*=(-1.0);
+                Forces force2 ; force2.addForces(child2->forces); //force2.F*=(-1.0);
+                if (!child1->ComponentList[FALLS] && !child2->ComponentList[FALLS]){
+
+                }
+                else if (!child1->ComponentList[FALLS]){
+                    //force2.F*=(-2.0);
+                    //child2->forces.clear();
+                    //child2->forces.push_back(force2);
+                    child2->oldVelocity=vec3(0.0,0.0,0.0);
+                }
+                else if(!child2->ComponentList[FALLS]){
+                    //force1.F*=(-2.0);
+                    //child1->forces.clear();
+                    //child1->forces.push_back(force1);
+
+                    child1->oldVelocity=vec3(0.0,0.0,0.0);
+                }
+                else{
+//                    force1.F*=(-2.0);
+//                    force2.F*=(-2.0);
+//                    child1->forces.push_back(force2);
+//                    child2->forces.push_back(force1);
+                    child2->oldVelocity=vec3(0.0,0.0,0.0);
+                    child1->oldVelocity=vec3(0.0,0.0,0.0);
+                }
+
+
             }
-
-
         }
     }
 
@@ -401,6 +477,10 @@ void PhysicsEngine::applyForces(Entity *e){
     for (int i=0;i<e->forces.size();i++){
         acc+=((1.0/e->mass)* e->forces[i].F);
     }
+    //acc = e->sumTrans.apply(acc) - e->sumTrans.apply(vec3(0.0,0.0,0.0));// (e->sumTrans.apply(e->forces[i].F) - e->sumTrans.apply(vec3(0.0,0.0,0.0))
+//    std::cout<<"acc : "<<e->name.toStdString()<<" "<<acc.x<<" "<<acc.y<<" "<<acc.z<<std::endl;
+
+    //acc = e->sumTrans.apply(acc);
     e->forces.clear();
     if (e->ComponentList[FALLS]){
 
@@ -408,8 +488,14 @@ void PhysicsEngine::applyForces(Entity *e){
     }
 
     vec3 displacement=0.99*e->oldVelocity+(1.0/60.0)*acc;
-    e->transfo = e->transfo.compose(Transformation((1.0/60.0)*e->oldVelocity, mat4(), vec3(1.0,1.0,1.0)));
+    //e->transfo = e->transfo.compose(Transformation((1.0/60.0)*e->oldVelocity, mat4(), vec3(1.0,1.0,1.0)));
+    e->transfo = (Transformation((1.0/60.0)*e->oldVelocity, mat4(), vec3(1.0,1.0,1.0)).compose(e->transfo));
     e->oldVelocity=vec3(displacement);
+
+    for (int i=0; i<e->children.size();i++){
+        applyForces(e->children[i]);
+    }
+
 }
 
 

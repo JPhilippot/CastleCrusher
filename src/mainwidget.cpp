@@ -346,6 +346,7 @@ void MainWidget::paintGL()
         translation = QVector3D(0.0, 0.0, 0.0);
         target = objectPosition;
         cameraPosition = QVector3D(0.0,0.0, -20.0);
+        //cameraPosition = QVector3D(0.0,10.0, 0.0);
         //si je prévois des translations de l'objet, il faudra que j'init sa pos ici
         isCamInit = true;
     }
@@ -380,9 +381,10 @@ void MainWidget::paintGL()
     pEngine->clearCollisionValues();
     entity->renderScene(Transformation(),geometries,pEngine);
     pEngine->resolveCollisionsFromRoot(entity);
-    for (int i=0; i<entity->children.size();i++){
-        pEngine->applyForces(entity->children[i]);
-    }
+    pEngine->applyForces(entity);
+//    for (int i=0; i<entity->children.size();i++){
+//        pEngine->applyForces(entity->children[i]);
+//    }
 
 
 
@@ -392,12 +394,12 @@ void MainWidget::paintGL()
 
 
 
-    std::cout<<"*"<<std::endl;
+    //std::cout<<"*"<<std::endl;
 
    // pEngine->resolveCollisionsFromRoot();
     //std::cout<<"*"<<std::endl;
 
-    pEngine->printCollisionValues();
+    //pEngine->printCollisionValues();
     //pEngine->collideCheck();
     geometries->draw(&program);
     update();

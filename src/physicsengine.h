@@ -12,6 +12,7 @@ struct collisionBoxValue{
 
 };
 
+
 class PhysicsEngine
 {
 
@@ -23,6 +24,8 @@ public:
     void printCollisionValues();
     void clearCollisionValues();
     std::vector<std::vector<int>> collideCheck();
+    std::vector<std::vector<int>> removeDuplicates(std::vector<std::vector<int>> objs);
+    std::vector<std::vector<int>> narrowPhase(std::vector<std::vector<Entity*>> collidingEntities);
 
     void applyForces(Entity *e);
 

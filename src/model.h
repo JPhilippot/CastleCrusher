@@ -14,6 +14,11 @@ enum shape{
     PLANE
 };
 
+struct Interval{
+    float min;
+    float max;
+};
+
 class Model
 {
 public:

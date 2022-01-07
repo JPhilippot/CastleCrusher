@@ -174,7 +174,7 @@ void GeometryEngine::draw(QOpenGLShaderProgram *program){
     //    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
         int texcoordLocation = program->attributeLocation("a_texcoord");
         program->enableAttributeArray(texcoordLocation);
-        program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offsetV, 2, sizeof(VertexData));
+        program->setAttributeBuffer(texcoordLocation, GL_FLOAT, 6, 3);
 //        program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offsetArray, 0, 0);
         //qInfo()<<"V "<<vertices[i].size()<<offsetV;
         //qInfo()<<"I "<<indices[i].size()<<offsetI;

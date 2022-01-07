@@ -59,6 +59,9 @@ public:
 
 
     QString getEntityName();
+
+    Interval getInterval(vec3 axis);
+
     void renameEntity(QString newName);
 
     Model* getModel();
@@ -68,6 +71,7 @@ public:
     vec3 rpf;
     vec3 oldVelocity = vec3(0.0,0.0,0.0);
     float mass = 1.0;
+    Transformation sumTrans;
 
     bool hasCollider();
     void renderScene(Transformation parentTrans, GeometryEngine* geoEngine,PhysicsEngine* p = nullptr);//, std::vector<std::vector<vec3>>* totVerts, std::vector<std::vector<unsigned int>>* totIdx); //
@@ -76,6 +80,7 @@ public:
     void draw(GeometryEngine& geoE, QOpenGLShaderProgram* program ,quintptr sizeYetArr, quintptr sizeYetInd);
     void detectCollision();
     Transformation getTransfo();
+    std::vector<vec3> getAxii();
     std::string print();
     bool hasChild();
     bool isAScene();

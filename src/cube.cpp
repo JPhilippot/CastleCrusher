@@ -98,3 +98,7 @@ std::vector<float> Cube::getCollisonArea(int granularity,Transformation myEntity
     return collisionArea;
 }
 
+//Interval Cube::getInterval(Transformation t, vec3 axis){
+//    vec3 A[] =
+//}
+
