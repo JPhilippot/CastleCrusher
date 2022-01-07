@@ -8,10 +8,16 @@ class Transformation;
 
 #include "transformation.h"
 
+enum shape{
+    CUBE,
+    SPHERE,
+    PLANE
+};
 
 class Model
 {
 public:
+    shape myShape;
     Model();
     //Model(std::vector<vec3> vert, std::vector<unsigned int> indices);
     Model(float size);

@@ -79,6 +79,7 @@ void loadCastlePreset1(Entity* e){
                           Transformation(vec3(0.00f,6.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr);
     //
     e->addChild(cubeTower1);
+     cubeTower1->ComponentList[FALLS] = true;
     cubeTower1->ComponentList[MESH] = true;
     cubeTower1->ComponentList[COLLISION] = true;
     cubeTower1->setTexture(":/ressources/grass.png");
@@ -123,7 +124,7 @@ void loadCastlePreset1(Entity* e){
 //    cubeTower3->forces.push_back(Forces(0.0,-0.1,0.0));
 //    cubeTower4->forces.push_back(Forces(0.0,-0.1,0.0));
 //    cubeTower5->forces.push_back(Forces(0.0,-0.1,0.0));
-    cubeTower1->forces.push_back(Forces(0.0,0.0,0.0));
+   // cubeTower1->forces.push_back(Forces(0.0,0.0,0.0));
 
 //    cubeTower6->forces.push_back(Forces(0.0,-9.1,0.0));
 //    cubeTower6->forces.push_back(Forces(00.0,800.0,0.0));
@@ -145,14 +146,21 @@ int main(int argc, char *argv[])
     Entity* ground = new Entity(e,QString("ground"),new Plane(5.0f),
                           Transformation(vec3(0.0f,0.0f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
 
-    ground->ComponentList[FALLS] = false;
+
     ground->ComponentList[MESH] = true;
     ground->ComponentList[COLLISION] = true;
-    ground->ComponentList[TEXTURE] = false;
+
+
+    Entity* bullet = new Entity(e,QString("bullet"),new Cube(1.0f),
+                          Transformation(vec3(3.00f,6.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr,false);
+
+    bullet->ComponentList[MESH] = true;
+    bullet->ComponentList[COLLISION] = true;
 
 
     loadCastlePreset1(e);
     e->addChild(ground);
+    e->addChild(bullet);
 
 
 

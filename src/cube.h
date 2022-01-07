@@ -5,6 +5,7 @@
 class Cube : public Model
 {
 public:
+    shape myShape = CUBE;
     Cube();
     Cube(float size);
     std::vector<float> getCollisonArea(int granularity,Transformation myEntityTransfo) override;

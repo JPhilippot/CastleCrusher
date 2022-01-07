@@ -1,10 +1,11 @@
 #ifndef SPHERE_H
 #define SPHERE_H
+#include "model.h"
 
-
-class Sphere
+class Sphere: public Model
 {
 public:
+    shape mySHape = SPHERE;
     Sphere();
 };
 

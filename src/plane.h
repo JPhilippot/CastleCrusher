@@ -6,6 +6,7 @@
 class Plane: public Model
 {
 public:
+    shape myShape = PLANE;
     Plane();
     Plane(float size);
     std::vector<float> getCollisonArea(int granularity,Transformation myEntityTransfo) override;

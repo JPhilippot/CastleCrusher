@@ -130,62 +130,53 @@ void MainWidget::keyPressEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_Z){
         std::cout<<"Z pressed !"<<std::endl;
-        QVector3D translationVector= QVector3D(0.0, 0.0, 0.15);
-        cameraPosition += translationVector;
-        target += translationVector;
+        cameraPosition += QVector3D(0.0, 0.0, 0.15);
+        target += QVector3D(0.0, 0.0, 0.0);
         update();
 
 //    update();
     }
     if(event->key() == Qt::Key_S){
         std::cout<<"S pressed !"<<std::endl;
-        QVector3D translationVector= QVector3D(0.0, 0.00, -0.15);
-        cameraPosition += translationVector;
-        target +=translationVector;
+        cameraPosition += QVector3D(0.0, 0.05, -0.15);
+        target += QVector3D(0.0, 0.0, 0.00);
         update();
 
 //    update();
     }
     if(event->key() == Qt::Key_A){
         std::cout<<"A pressed !"<<std::endl;
-        QVector3D translationVector=QVector3D(0.0, 0.15, 0.0);
-        cameraPosition += translationVector;
-        target += translationVector;
+        cameraPosition += QVector3D(0.0, -0.15, 0.0);
+        target += QVector3D(0.0, 0.00, 0.0);
         update();
 
 //    update();
     }
     if(event->key() == Qt::Key_E){
         std::cout<<"E pressed !"<<std::endl;
-        QVector3D translationVector=QVector3D(0.0, -0.15, 0.0);
-        cameraPosition += translationVector;
-        target += translationVector;
+        cameraPosition += QVector3D(0.0, 0.15, 0.0);
+        target += QVector3D(0.0, 0.00, 0.0);
         update();
 
 //    update();
     }
+    if(event->key() == Qt::Key_R){
+        std::cout<<"Camera position reinitialized !"<<std::endl;
+       isCamInit = false;
 
+        update();
+    }
 
     if(event->key() == Qt::Key_Q){
         std::cout<<"Q pressed !"<<std::endl;
-         QVector3D translationVector=QVector3D(-0.15, 0.0, 0.0);
-        cameraPosition += translationVector;
-        target += translationVector;
+        cameraPosition += QVector3D(-0.05, 0.0, 0.0);
+        target += QVector3D(-0.05, 0.0, 0.0);
         update();
     }
     if(event->key() == Qt::Key_D){
         std::cout<<"D pressed !"<<std::endl;
-         QVector3D translationVector= QVector3D(0.15, 0.0, 0.0);
-        cameraPosition += translationVector;
-        target += translationVector;
-        update();
-    }
-
-    if(event->key() == Qt::Key_R){
-        std::cout<<"Camera position reinitialized !"<<std::endl;
-       isCamInit = false;
-        angularSpeed = 0;
-        cRotation = QQuaternion();
+        cameraPosition += QVector3D(0.05, 0.0, 0.0);
+        target += QVector3D(0.05, 0.0, 0.0);
         update();
     }
 
@@ -194,6 +185,19 @@ void MainWidget::keyPressEvent(QKeyEvent *event)
         std::cout<<"Orbital camera :"<< orbitalCamera<<std::endl;
         update();
     }
+
+    if(event->key() == Qt::Key_Space){
+              std::cout<<"Space pressed !"<<std::endl;
+            QVector2D shotTarget = QVector2D(this->mapFromGlobal(QCursor::pos()));
+            for (size_t i = 0;i < entity->children.size() ; i++ ) {
+                if(entity->children.at(i)->name == "bullet"){
+                    QVector3D myPos = QVector3D(entity->children.at(i)->transfo.apply(vec3(0,0,0)).x,entity->children.at(i)->transfo.apply(vec3(0,0,0)).y,entity->children.at(i)->transfo.apply(vec3(0,0,0)).z);
+                    entity->children.at(i)->forces.push_back(Forces(myPos.x() - shotTarget.x(),myPos.y() - shotTarget.y(), myPos.z() - 0.0f));
+                    entity->children.at(i)->ComponentList[FALLS] = true;
+                }
+            }
+            update();
+        }
 
 }
 
@@ -248,56 +252,28 @@ void MainWidget::initShaders()
 //! [3]
 
 //! [4]
-void recursiveTextureBind(Entity* e, unsigned int &textureCpt){
-    for(size_t i =0; i <e->children.size(); i++){
-        if(e->children.at(i)->ComponentList.find(TEXTURE) != e->children.at(i)->ComponentList.end()){
-            if(e->children.at(i)->ComponentList.find(TEXTURE)->second == true){
-                QOpenGLTexture* texture = new QOpenGLTexture(QImage(":/ressources/grass.png").mirrored());
-                texture->setMinificationFilter(QOpenGLTexture::Nearest);
-                texture->bind(textureCpt);
-                textureCpt++;
-                delete texture;
-            }
-        }
-        if(e->children.at(i)->hasChild()){
-//            std::cout<<e->print()<<" has child "<<e->children.at(i)->hasChild()<<std::endl;
-            recursiveTextureBind(e->children.at(i),textureCpt);
-        }
-    }
-}
 void MainWidget::initTextures()
 {
-
-    unsigned int textureCpt = 0;
-
-    recursiveTextureBind(entity,textureCpt);
-
     // Load cube.png image
+    textureG = new QOpenGLTexture(QImage(":/ressources/grass.png").mirrored());
+    textureR = new QOpenGLTexture(QImage(":/ressources/rock.png").mirrored());
+    textureS = new QOpenGLTexture(QImage(":/ressources/snowrocks.png").mirrored());
 
-//    textureG = new QOpenGLTexture(QImage(":/ressources/grass.png").mirrored());
-//    textureR = new QOpenGLTexture(QImage(":/ressources/rock.png").mirrored());
-//    textureS = new QOpenGLTexture(QImage(":/ressources/snowrocks.png").mirrored());
+    // Set nearest filtering mode for texture minification
+    textureG->setMinificationFilter(QOpenGLTexture::Nearest);
+    textureR->setMinificationFilter(QOpenGLTexture::Nearest);
+    textureS->setMinificationFilter(QOpenGLTexture::Nearest);
 
-//    // Set nearest filtering mode for texture minification
-//    textureG->setMinificationFilter(QOpenGLTexture::Nearest);
-//    textureR->setMinificationFilter(QOpenGLTexture::Nearest);
-//    textureS->setMinificationFilter(QOpenGLTexture::Nearest);
+    // Set bilinear filtering mode for texture magnification
+    textureG->setMagnificationFilter(QOpenGLTexture::Linear);
+    textureR->setMagnificationFilter(QOpenGLTexture::Linear);
+    textureS->setMagnificationFilter(QOpenGLTexture::Linear);
 
-//    // Set bilinear filtering mode for texture magnification
-//    textureG->setMagnificationFilter(QOpenGLTexture::Linear);
-//    textureR->setMagnificationFilter(QOpenGLTexture::Linear);
-//    textureS->setMagnificationFilter(QOpenGLTexture::Linear);
-
-//    // Wrap texture coordinates by repeating
-//    // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
-//    textureG->setWrapMode(QOpenGLTexture::Repeat);
-//    textureR->setWrapMode(QOpenGLTexture::Repeat);
-//    textureS->setWrapMode(QOpenGLTexture::Repeat);
-
-//    textureG->bind(0);
-//    textureR->bind(1);
-//    textureS->bind(2);
-
+    // Wrap texture coordinates by repeating
+    // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
+    textureG->setWrapMode(QOpenGLTexture::Repeat);
+    textureR->setWrapMode(QOpenGLTexture::Repeat);
+    textureS->setWrapMode(QOpenGLTexture::Repeat);
 }
 //! [4]
 
@@ -323,12 +299,15 @@ void MainWidget::paintGL()
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    textureG->bind(0);
+    textureR->bind(1);
+    textureS->bind(2);
 
 
     if(!isCamInit){
         translation = QVector3D(0.0, 0.0, 0.0);
         target = objectPosition;
-        cameraPosition = QVector3D(0.0,2, -10.0);
+        cameraPosition = QVector3D(0.0,0.0, -20.0);
         //si je prévois des translations de l'objet, il faudra que j'init sa pos ici
         isCamInit = true;
     }
@@ -375,12 +354,12 @@ void MainWidget::paintGL()
 
 
 
-    //std::cout<<"*"<<std::endl;
+    std::cout<<"*"<<std::endl;
 
    // pEngine->resolveCollisionsFromRoot();
     //std::cout<<"*"<<std::endl;
 
-    //pEngine->printCollisionValues();
+    pEngine->printCollisionValues();
     //pEngine->collideCheck();
     geometries->draw(&program);
     update();

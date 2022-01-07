@@ -150,17 +150,32 @@ std::vector<std::vector<int>> PhysicsEngine::collideCheck(){
 
 
 
-        if (cBVx[i].isStart){echeancier.push_back(cBVx[i].entity->getID());}
+        if (cBVx[i].isStart){
+            if (echeancier.size()!=0){
+                std::vector<int>::iterator collide = echeancier.begin();
+                for (collide;collide!=echeancier.end();collide++){
+                    couplescollideX.push_back({*collide,cBVx[i].entity->getID()});
+                }
+            }
+
+
+            echeancier.push_back(cBVx[i].entity->getID());}
 
         else{
-
+            std::vector<int>::iterator collide = (std::vector<int>::iterator)std::find(echeancier.begin(),echeancier.end(),cBVx[i].entity->getID());
+            std::cout<<"X : "<<*collide<<std::endl;
+            collide++;
+            while (collide != echeancier.end()){
+                couplescollideX.push_back({*collide,cBVx[i].entity->getID()});
+                collide++;
+            }
             echeancier.erase(std::find(echeancier.begin(),echeancier.end(),cBVx[i].entity->getID()));
 
 
         }
-        if (echeancier.size()!=0 && echeancier[echeancier.size()-1]!=cBVx[i].entity->getID()){
-            couplescollideX.push_back({echeancier[echeancier.size()-1],cBVx[i].entity->getID()});
-        }
+//        if (echeancier.size()!=0 && echeancier[echeancier.size()-1]!=cBVx[i].entity->getID()){
+//            couplescollideX.push_back({echeancier[echeancier.size()-1],cBVx[i].entity->getID()});
+//        }
     }
 
     if (couplescollideX.size()==0){return std::vector<std::vector<int>>();}
@@ -172,17 +187,32 @@ std::vector<std::vector<int>> PhysicsEngine::collideCheck(){
     for (int i=0; i<cBVy.size();i++){
 
 
-        if (cBVy[i].isStart){echeancier.push_back(cBVy[i].entity->getID());}
+        if (cBVy[i].isStart){
+            if (echeancier.size()!=0){
+                std::vector<int>::iterator collide = echeancier.begin();
+                for (collide;collide!=echeancier.end();collide++){
+                    couplescollideY.push_back({*collide,cBVy[i].entity->getID()});
+                }
+            }
+            echeancier.push_back(cBVy[i].entity->getID());}
 
         else{
+
+            std::vector<int>::iterator collide = (std::vector<int>::iterator)std::find(echeancier.begin(),echeancier.end(),cBVy[i].entity->getID());
+            std::cout<<"Y : "<<*collide<<std::endl;
+            collide++;
+            while (collide != echeancier.end()){
+                couplescollideY.push_back({*collide,cBVy[i].entity->getID()});
+                collide++;
+            }
 
             echeancier.erase(std::find(echeancier.begin(),echeancier.end(),cBVy[i].entity->getID()));
 
 
         }
-        if (echeancier.size()!=0 && echeancier[echeancier.size()-1]!=cBVy[i].entity->getID()){
-            couplescollideY.push_back({echeancier[echeancier.size()-1],cBVy[i].entity->getID()});
-        }
+//        if (echeancier.size()!=0 && echeancier[echeancier.size()-1]!=cBVy[i].entity->getID()){
+//            couplescollideY.push_back({echeancier[echeancier.size()-1],cBVy[i].entity->getID()});
+//        }
     }
 
     if (couplescollideY.size()==0){return std::vector<std::vector<int>>();}
@@ -213,17 +243,35 @@ std::vector<std::vector<int>> PhysicsEngine::collideCheck(){
     for (int i=0; i<cBVz.size();i++){
 
 
-        if (cBVz[i].isStart){echeancier.push_back(cBVz[i].entity->getID());}
+        if (cBVz[i].isStart){
+            if (echeancier.size()!=0){
+                std::vector<int>::iterator collide = echeancier.begin();
+                for (collide;collide!=echeancier.end();collide++){
+                    couplescollideZ.push_back({*collide,cBVz[i].entity->getID()});
+                }
+            }
+
+            echeancier.push_back(cBVz[i].entity->getID());}
 
         else{
 
+            std::vector<int>::iterator collide = (std::vector<int>::iterator)std::find(echeancier.begin(),echeancier.end(),cBVz[i].entity->getID());
+            std::cout<<"Z : "<<*collide<<std::endl;
+            if (collide!=echeancier.end()){
+            collide++;
+            while (collide != echeancier.end()){
+                couplescollideZ.push_back({*collide,cBVz[i].entity->getID()});
+                collide++;
+            }
+
             echeancier.erase(std::find(echeancier.begin(),echeancier.end(),cBVz[i].entity->getID()));
+            }
 
 
         }
-        if (echeancier.size()!=0 && echeancier[echeancier.size()-1]!=cBVz[i].entity->getID()){
-            couplescollideZ.push_back({echeancier[echeancier.size()-1],cBVz[i].entity->getID()});
-        }
+//        if (echeancier.size()!=0 && echeancier[echeancier.size()-1]!=cBVz[i].entity->getID()){
+//            couplescollideZ.push_back({echeancier[echeancier.size()-1],cBVz[i].entity->getID()});
+//        }
     }
     if (couplescollideZ.size()==0){return std::vector<std::vector<int>>();}
 
@@ -255,6 +303,13 @@ void PhysicsEngine::resolveCollisionsFromRoot(Entity* root){    // pk root en pa
     sortCollisionValues();
     //std::cout<<"je suis dans resolve\n";
     std::vector<std::vector<int>> collidingObjs = collideCheck(); // -> [[id=1, id=3], [id=3, id=2], ...]
+    /**
+    narrow phase :
+    foreach collision,
+
+    **/
+
+    //forces application
     for (int couples = 0; couples<collidingObjs.size();couples++){
         Entity* child1 = root->getChildByID(collidingObjs[couples][0]);
         Entity* child2 = root->getChildByID(collidingObjs[couples][1]);
@@ -269,15 +324,20 @@ void PhysicsEngine::resolveCollisionsFromRoot(Entity* root){    // pk root en pa
             }
             else if (!child1->ComponentList[FALLS]){
                 force2.F*=(-2.0);
+                //child2->forces.clear();
                 child2->forces.push_back(force2);
                 child2->oldVelocity=vec3(0.0,0.0,0.0);
             }
             else if(!child2->ComponentList[FALLS]){
                 force1.F*=(-2.0);
+                //child1->forces.clear();
                 child1->forces.push_back(force1);
+
                 child1->oldVelocity=vec3(0.0,0.0,0.0);
             }
             else{
+                force1.F*=(-2.0);
+                force2.F*=(-2.0);
                 child1->forces.push_back(force2);
                 child2->forces.push_back(force1);
             }
