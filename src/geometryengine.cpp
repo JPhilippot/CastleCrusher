@@ -172,9 +172,9 @@ void GeometryEngine::draw(QOpenGLShaderProgram *program){
     //    offsetArray += sizeof(QVector3D);
 
     //    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
-//        int texcoordLocation = program->attributeLocation("a_texcoord");
-//        program->enableAttributeArray(texcoordLocation);
-//    //    program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offsetArray, 2, sizeof(VertexData));
+        int texcoordLocation = program->attributeLocation("a_texcoord");
+        program->enableAttributeArray(texcoordLocation);
+        program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offsetV, 2, sizeof(VertexData));
 //        program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offsetArray, 0, 0);
         //qInfo()<<"V "<<vertices[i].size()<<offsetV;
         //qInfo()<<"I "<<indices[i].size()<<offsetI;

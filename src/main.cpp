@@ -79,38 +79,38 @@ void loadCastlePreset1(Entity* e){
                           Transformation(vec3(0.00f,6.005f,0.0f),vec3(0.0,0.0,0.0),vec3(1.0f,1.0f,1.0f)),vec3(0.0,0.0,0.0),nullptr);
     //
     e->addChild(cubeTower1);
-     cubeTower1->ComponentList[FALLS] = true;
+//     cubeTower1->ComponentList[FALLS] = true;
     cubeTower1->ComponentList[MESH] = true;
     cubeTower1->ComponentList[COLLISION] = true;
-    cubeTower1->setTexture(":/ressources/grass.png");
-//    cubeTower1->ComponentList[TEXTURE] = false;
+   // cubeTower1->setTexture(":/ressources/grass.png");
+    cubeTower1->ComponentList[TEXTURE] = true;
 
     e->addChild(cubeTower2);
     e->addChild(cubeTower3);
     e->addChild(cubeTower4);
     e->addChild(cubeTower5);
     e->addChild(cubeTower6);
-    cubeTower6->ComponentList[FALLS] = true;
+//    cubeTower6->ComponentList[FALLS] = true;
     cubeTower6->ComponentList[MESH] = true;
     cubeTower6->ComponentList[COLLISION] = true;
 
 
-    cubeTower5->ComponentList[FALLS] = true;
+//    cubeTower5->ComponentList[FALLS] = true;
     cubeTower5->ComponentList[MESH] = true;
     cubeTower5->ComponentList[COLLISION] = true;
 
 
-    cubeTower4->ComponentList[FALLS] = true;
+//    cubeTower4->ComponentList[FALLS] = true;
     cubeTower4->ComponentList[MESH] = true;
     cubeTower4->ComponentList[COLLISION] = true;
 
 
-    cubeTower3->ComponentList[FALLS] = true;
+//    cubeTower3->ComponentList[FALLS] = true;
     cubeTower3->ComponentList[MESH] = true;
     cubeTower3->ComponentList[COLLISION] = true;
 
 
-    cubeTower2->ComponentList[FALLS] = true;
+//    cubeTower2->ComponentList[FALLS] = true;
     cubeTower2->ComponentList[MESH] = true;
     cubeTower2->ComponentList[COLLISION] = true;
 
